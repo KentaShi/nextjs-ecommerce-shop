@@ -8,7 +8,7 @@ export default function Home({ products }) {
     return (
         <div>
             {products.map((product) => (
-                <Product product={product} />
+                <Product key={product.id} product={product} />
             ))}
         </div>
     );
