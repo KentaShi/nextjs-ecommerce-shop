@@ -10,34 +10,48 @@ import {
     Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
+import { useState } from "react";
 
 const login = () => {
+    const initState = {
+        username: "",
+        password: "",
+    };
+    const [userData, setUserData] = useState(initState);
+    const { username, password } = userData;
+
+    const handleChangeInput = (e) => {
+        const { name, value } = e.target;
+        setUserData({ ...userData, [name]: value });
+    };
     return (
         <div className='flex flex-1 items-center justify-center mt-8'>
             <Head>
                 <title>Login Page</title>
             </Head>
-            <Card className='w-96'>
-                <CardHeader
-                    variant='gradient'
-                    color='teal'
-                    className='mb-4 grid h-28 place-items-center'
-                >
-                    <Typography variant='h3' color='white'>
-                        Sign In
-                    </Typography>
-                </CardHeader>
-                <CardBody className='flex flex-col gap-4'>
-                    <Input label='Email' size='lg' />
-                    <Input label='Password' size='lg' />
-                    <div className='-ml-2.5'>
-                        <Checkbox label='Remember Me' />
-                    </div>
-                </CardBody>
-                <CardFooter className='pt-0'>
+            <Card className='w-96 p-8'>
+                <Typography variant='h3' color='teal'>
+                    Sign In
+                </Typography>
+                <form className='flex flex-col gap-4 mt-8 mb-2 w-80 max-w-screen-lg'>
+                    <Input
+                        label='Username'
+                        size='lg'
+                        name='username'
+                        value={username}
+                        onChange={handleChangeInput}
+                    />
+                    <Input
+                        label='Password'
+                        size='lg'
+                        name='password'
+                        value={password}
+                        onChange={handleChangeInput}
+                    />
                     <Button color='cyan' variant='gradient' fullWidth>
                         Sign In
                     </Button>
+
                     <div className='flex flex-row items-center justify-center mt-6'>
                         <Typography
                             variant='small'
@@ -51,11 +65,11 @@ const login = () => {
                                 color='blue'
                                 className='ml-1 font-bold'
                             >
-                                Sign up
+                                Sign Up
                             </Typography>
                         </Link>
                     </div>
-                </CardFooter>
+                </form>
             </Card>
         </div>
     );
