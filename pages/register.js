@@ -10,7 +10,10 @@ import {
     Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import valid from "@/utils/valid";
+import { DataContext } from "@/store/globalState";
+import { postData } from "@/utils/fetchData";
 
 const register = () => {
     const initState = {
@@ -22,15 +25,29 @@ const register = () => {
     const [userData, setUserData] = useState(initState);
     const { fullName, username, password, confirmPassword } = userData;
 
+    const [state, dispatch] = useContext(DataContext);
+
     const handleChangeInput = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("submitted");
-        console.log(userData);
+        const errMsg = valid(fullName, username, password, confirmPassword);
+        if (errMsg) {
+            return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
+        }
+        dispatch({ type: "NOTIFY", payload: { loading: true } });
+
+        const res = await postData("auth/register", userData);
+        if (res.err) {
+            return dispatch({
+                type: "NOTIFY",
+                payload: { error: res.err },
+            });
+        }
+        return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
     };
 
     return (

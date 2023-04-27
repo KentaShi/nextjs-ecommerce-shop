@@ -1,25 +1,22 @@
 import mongoose from "mongoose";
+const MONGODB_URL = process.env.MONGODB_URL;
 
-const connectDB = () => {
+const connectDB = async () => {
     if (mongoose.connections[0].readyState) {
         console.log("Mongoose Already Connected.");
         return;
     }
-    mongoose.connect(
-        process.env.MONGODB_URL,
-        {
-            useCreateIndex: true,
-            useFindAndModify: false,
+    mongoose
+        .connect(MONGODB_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-        },
-        (error) => {
-            if (error) {
-                throw new Error(error);
-            }
-            console.log("Connected to MongoDB...");
-        }
-    );
+        })
+        .then(() => {
+            console.log("Mongoose Connected");
+        })
+        .catch((error) => {
+            console.log("Mongoose Error: " + error);
+        });
 };
 
 export default connectDB;

@@ -3,8 +3,6 @@ import User from "@/models/userModel";
 import valid from "@/utils/valid";
 import bcrypt from "bcrypt";
 
-connectDB();
-
 export default async (req, res) => {
     switch (req.method) {
         case "POST":
@@ -22,6 +20,13 @@ const register = async (req, res) => {
             return res.status(400).json({ err: errMsg });
         }
 
+        const user = await User.findOne({ username });
+        if (user) {
+            return res
+                .status(400)
+                .json({ err: "This username has already exists!" });
+        }
+
         const passwordHash = await bcrypt.hash(password, 12);
         const newUser = new User({
             fullName,
@@ -30,6 +35,8 @@ const register = async (req, res) => {
         });
 
         await newUser.save();
-        return res.status(200).json("Success");
-    } catch (error) {}
+        return res.status(200).json({ msg: "Register Successfully!" });
+    } catch (error) {
+        return res.status(500).json({ err: error });
+    }
 };

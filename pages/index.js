@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Inter } from "next/font/google";
 import Product from "@/components/Product";
+import connectDB from "@/utils/connectDB";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function Home({ products }) {
 }
 
 export const getServerSideProps = async () => {
+    await connectDB();
     const products = [
         {
             id: 1,
