@@ -10,7 +10,10 @@ import {
     Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { DataContext } from "@/store/globalState";
+import { postData } from "@/utils/fetchData";
+import Cookies from "js-cookie";
 
 const login = () => {
     const initState = {
@@ -20,9 +23,37 @@ const login = () => {
     const [userData, setUserData] = useState(initState);
     const { username, password } = userData;
 
+    const [state, dispatch] = useContext(DataContext);
+
     const handleChangeInput = (e) => {
         const { name, value } = e.target;
         setUserData({ ...userData, [name]: value });
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        dispatch({ type: "NOTIFY", payload: { loading: true } });
+
+        const res = await postData("auth/login", userData);
+        if (res.err) {
+            return dispatch({
+                type: "NOTIFY",
+                payload: { error: res.err },
+            });
+        }
+        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+
+        dispatch({
+            type: "AUTH",
+            payload: { token: res.access_token, user: res.user },
+        });
+
+        Cookies.set("refresh_token", res.refresh_token, {
+            path: "api/auth/accessToken",
+            expires: 7,
+        });
+
+        localStorage.setItem("firstLogin", true);
     };
     return (
         <div className='flex flex-1 items-center justify-center mt-8'>
@@ -33,7 +64,10 @@ const login = () => {
                 <Typography variant='h3' color='teal'>
                     Sign In
                 </Typography>
-                <form className='flex flex-col gap-4 mt-8 mb-2 w-80 max-w-screen-lg'>
+                <form
+                    onSubmit={handleSubmit}
+                    className='flex flex-col gap-4 mt-8 mb-2 w-80 max-w-screen-lg'
+                >
                     <Input
                         label='Username'
                         size='lg'
@@ -44,11 +78,17 @@ const login = () => {
                     <Input
                         label='Password'
                         size='lg'
+                        type='password'
                         name='password'
                         value={password}
                         onChange={handleChangeInput}
                     />
-                    <Button color='cyan' variant='gradient' fullWidth>
+                    <Button
+                        type='submit'
+                        color='cyan'
+                        variant='gradient'
+                        fullWidth
+                    >
                         Sign In
                     </Button>
 

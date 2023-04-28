@@ -1,9 +1,26 @@
 import Link from "next/link";
+import {
+    MobileNav,
+    Typography,
+    Button,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
+    Avatar,
+    Card,
+    IconButton,
+} from "@material-tailwind/react";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext, useState } from "react";
+import { DataContext } from "@/store/globalState";
 
 const Navbar = () => {
     const router = useRouter();
+    const [state, dispatch] = useContext(DataContext);
+    const { auth } = state;
+
     const isActive = (r) => {
         if (r === router.pathname) {
             return " font-semibold";
@@ -11,6 +28,73 @@ const Navbar = () => {
             return "";
         }
     };
+
+    const profileMenuItems = [
+        { label: "My Profile", icon: "" },
+        { label: "Sign Out", icon: "" },
+    ];
+
+    const ProfileMenu = ({ fullName, avatar }) => {
+        console.log(avatar);
+        const [isMenuOpen, setIsMenuOpen] = useState(false);
+        const closeMenu = () => setIsMenuOpen(false);
+        return (
+            <Menu
+                open={isMenuOpen}
+                handler={setIsMenuOpen}
+                placement='bottom-end'
+            >
+                <MenuHandler>
+                    <Button
+                        variant='text'
+                        color='blue-gray'
+                        className='flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto'
+                    >
+                        <Avatar
+                            variant='circular'
+                            size='sm'
+                            alt={fullName}
+                            className='border border-blue-500 p-0.5'
+                            src={avatar}
+                        />
+                        {fullName}
+                        <ChevronDownIcon
+                            strokeWidth={2.5}
+                            className={`h-3 w-3 transition-transform ${
+                                isMenuOpen ? "rotate-180" : ""
+                            }`}
+                        />
+                    </Button>
+                </MenuHandler>
+                <MenuList className='p-1'>
+                    {profileMenuItems.map(({ label, icon }, key) => {
+                        const isLastItem = key === profileMenuItems.length - 1;
+                        return (
+                            <MenuItem
+                                key={label}
+                                onClick={closeMenu}
+                                className={`flex items-center gap-2 rounded ${
+                                    isLastItem
+                                        ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+                                        : ""
+                                }`}
+                            >
+                                <Typography
+                                    as='span'
+                                    variant='small'
+                                    className='font-normal'
+                                    color={isLastItem ? "red" : "inherit"}
+                                >
+                                    {label}
+                                </Typography>
+                            </MenuItem>
+                        );
+                    })}
+                </MenuList>
+            </Menu>
+        );
+    };
+
     return (
         <header className='border-b backdrop-blur bg-teal-100/80 fixed w-full top-0 left-0 z-30'>
             <div className='container px-4 py-5 mx-auto flex items-center justify-around'>
@@ -62,19 +146,28 @@ const Navbar = () => {
                             </div>
                         </Link>
                     </div>
-                    <div className='ml-2'>
-                        <Link href={`/login`}>
-                            <div
-                                className={
-                                    "flex items-center" + isActive("/login")
-                                }
-                            >
-                                <p className='ml-2 text-lg 2xl:text-xl'>
-                                    Sign In
-                                </p>
-                            </div>
-                        </Link>
-                    </div>
+                    {Object.keys(auth).length === 0 ? (
+                        <div className='ml-2'>
+                            <Link href={`/login`}>
+                                <div
+                                    className={
+                                        "flex items-center" + isActive("/login")
+                                    }
+                                >
+                                    <p className='ml-2 text-lg 2xl:text-xl'>
+                                        Sign In
+                                    </p>
+                                </div>
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className='ml-2'>
+                            <ProfileMenu
+                                fullName={auth.user.fullName}
+                                avatar={auth.user.avatar}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </header>

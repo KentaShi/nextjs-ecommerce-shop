@@ -13,3 +13,12 @@ export const postData = async (url, post) => {
         return error.response.data;
     }
 };
+
+export const getData = async (url) => {
+    try {
+        const res = await axios.get(`${BASE_URL}/api/${url}`);
+        return res.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
