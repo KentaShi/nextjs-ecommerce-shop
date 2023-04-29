@@ -10,10 +10,11 @@ import {
     Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import valid from "@/utils/valid";
 import { DataContext } from "@/store/globalState";
 import { postData } from "@/utils/fetchData";
+import { useRouter } from "next/router";
 
 const register = () => {
     const initState = {
@@ -26,6 +27,9 @@ const register = () => {
     const { fullName, username, password, confirmPassword } = userData;
 
     const [state, dispatch] = useContext(DataContext);
+    const { auth } = state;
+
+    const router = useRouter();
 
     const handleChangeInput = (e) => {
         const { name, value } = e.target;
@@ -49,6 +53,10 @@ const register = () => {
         }
         return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
     };
+
+    useEffect(() => {
+        if (Object.keys(auth).length !== 0) router.push("/");
+    }, [auth]);
 
     return (
         <div className='flex flex-1 items-center justify-center mt-8'>

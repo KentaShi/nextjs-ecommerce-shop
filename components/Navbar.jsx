@@ -15,6 +15,7 @@ import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { DataContext } from "@/store/globalState";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
     const router = useRouter();
@@ -30,14 +31,21 @@ const Navbar = () => {
     };
 
     const profileMenuItems = [
-        { label: "My Profile", icon: "" },
-        { label: "Sign Out", icon: "" },
+        { label: "My Profile", icon: "", path: "profile" },
+        { label: "Sign Out", icon: "", path: "logout" },
     ];
 
     const ProfileMenu = ({ fullName, avatar }) => {
         console.log(avatar);
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const closeMenu = () => setIsMenuOpen(false);
+        const handleLogout = (e) => {
+            e.preventDefault();
+            Cookies.remove("refresh_token", { path: "api/auth/accessToken" });
+            localStorage.removeItem("firstLogin");
+            dispatch({ type: "AUTH", payload: {} });
+            dispatch({ type: "NOTIFY", payload: { success: "Logged out." } });
+        };
         return (
             <Menu
                 open={isMenuOpen}
@@ -67,12 +75,14 @@ const Navbar = () => {
                     </Button>
                 </MenuHandler>
                 <MenuList className='p-1'>
-                    {profileMenuItems.map(({ label, icon }, key) => {
+                    {profileMenuItems.map(({ label, path }, key) => {
                         const isLastItem = key === profileMenuItems.length - 1;
                         return (
                             <MenuItem
                                 key={label}
-                                onClick={closeMenu}
+                                onClick={
+                                    path === "logout" ? handleLogout : closeMenu
+                                }
                                 className={`flex items-center gap-2 rounded ${
                                     isLastItem
                                         ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"

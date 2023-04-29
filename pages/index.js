@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import Product from "@/components/Product";
 import connectDB from "@/utils/connectDB";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home({ products }) {
     return (
         <div>
