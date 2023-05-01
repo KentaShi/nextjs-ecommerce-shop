@@ -1,8 +1,9 @@
-import React from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, { useContext } from "react";
+import { toast } from "react-toastify";
+import { DataContext } from "@/store/globalState";
 
 const Toast = ({ msg: { msg, title } }) => {
+    const [state, dispatch] = useContext(DataContext);
     const notify = () => {
         if (title === "error") {
             return toast.error(msg);
@@ -11,23 +12,8 @@ const Toast = ({ msg: { msg, title } }) => {
             return toast.success(msg);
         }
     };
-    notify();
-    return (
-        <div>
-            <ToastContainer
-                position='top-right'
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme='light'
-            />
-        </div>
-    );
+    // notify();
+    return <div>{notify()}</div>;
 };
 
 export default Toast;

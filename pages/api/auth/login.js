@@ -33,20 +33,18 @@ const login = async (req, res) => {
         const access_token = createAccessToken({ id: user._id });
         const refresh_token = createRefreshToken({ id: user._id });
 
-        return res
-            .status(200)
-            .json({
-                msg: "Register Successfully!",
-                refresh_token,
-                access_token,
-                user: {
-                    fullName: user.fullName,
-                    username: user.username,
-                    role: user.role,
-                    root: user.root,
-                    avatar: user.avatar,
-                },
-            });
+        return res.status(200).json({
+            msg: "Sign In Successfully!",
+            refresh_token,
+            access_token,
+            user: {
+                fullName: user.fullName,
+                username: user.username,
+                role: user.role,
+                root: user.root,
+                avatar: user.avatar,
+            },
+        });
     } catch (error) {
         return res.status(500).json({ err: error });
     }

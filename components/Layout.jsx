@@ -8,9 +8,7 @@ const Layout = ({ children }) => {
         <div className='flex flex-col min-h-screen'>
             <Navbar />
             <Notify />
-            <div className='flex-1 mt-20 justify-center items-center'>
-                {children}
-            </div>
+            <div className='mt-28 mx-44'>{children}</div>
             <Footer />
         </div>
     );

@@ -36,7 +36,6 @@ const Navbar = () => {
     ];
 
     const ProfileMenu = ({ fullName, avatar }) => {
-        console.log(avatar);
         const [isMenuOpen, setIsMenuOpen] = useState(false);
         const closeMenu = () => setIsMenuOpen(false);
         const handleLogout = (e) => {
