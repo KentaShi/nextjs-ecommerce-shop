@@ -5,7 +5,11 @@ import { getData } from "@/utils/fetchData";
 export const DataContext = createContext();
 
 export const DataProvider = ({ children }) => {
-    const initState = { notify: {}, auth: {}, cart: [] };
+    const initState = {
+        notify: {},
+        auth: {},
+        cart: { products: [], totalQty: 0 },
+    };
     const [state, dispatch] = useReducer(reducers, initState);
 
     useEffect(() => {

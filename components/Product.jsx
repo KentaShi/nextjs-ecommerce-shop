@@ -10,6 +10,7 @@ import {
 } from "@material-tailwind/react";
 
 const Product = ({ product: { _id, name, price, description, images } }) => {
+    const addToCart = (product, qty) => {};
     return (
         <div className='my-10'>
             <Card className='w-96'>
@@ -35,11 +36,12 @@ const Product = ({ product: { _id, name, price, description, images } }) => {
                     <Typography
                         variant='small'
                         color='gray'
-                        className='flex gap-1'
+                        className='flex gap-1 cursor-pointer'
                     >
                         <svg
+                            onClick={addToCart}
                             xmlns='http://www.w3.org/2000/svg'
-                            class='h-6 w-6 group-hover:opacity-50 opacity-70'
+                            className='h-6 w-6 group-hover:opacity-50 opacity-70'
                             fill='none'
                             viewBox='0 0 24 24'
                             stroke='black'

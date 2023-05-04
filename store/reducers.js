@@ -15,7 +15,7 @@ const reducers = (state, action) => {
         case ACTIONS.ADD_TO_CART:
             return {
                 ...state,
-                auth: action.payload,
+                cart: action.payload,
             };
         default:
             return state;
