@@ -9,7 +9,7 @@ const ProductDetail = ({ product }) => {
 
     const [state, dispatch] = useContext(DataContext);
     const {
-        cart: { products, totalQty },
+        cart: { products, totalQty, totalPrice },
     } = state;
 
     const handleMinus = (e) => {
@@ -48,12 +48,17 @@ const ProductDetail = ({ product }) => {
             });
         }
 
-        return dispatch({
+        dispatch({
             type: "ADD_TO_CART",
             payload: {
                 products: [...products, { product, qty: qty }],
                 totalQty: totalQty + qty,
+                totalPrice: totalPrice + product.price * qty,
             },
+        });
+        dispatch({
+            type: "NOTIFY",
+            payload: { success: "This product is added to your cart" },
         });
     };
     return (
