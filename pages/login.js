@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head from "next/head"
 import {
     Card,
     CardHeader,
@@ -8,63 +8,63 @@ import {
     Input,
     Checkbox,
     Button,
-} from "@material-tailwind/react";
-import Link from "next/link";
-import { useState, useContext, useEffect } from "react";
-import { DataContext } from "@/store/globalState";
-import { postData } from "@/utils/fetchData";
-import Cookies from "js-cookie";
-import { useRouter } from "next/router";
+} from "@material-tailwind/react"
+import Link from "next/link"
+import { useState, useContext, useEffect } from "react"
+import { DataContext } from "@/store/globalState"
+import { postData } from "@/utils/fetchData"
+import Cookies from "js-cookie"
+import { useRouter } from "next/router"
 
 const login = () => {
     const initState = {
         username: "",
         password: "",
-    };
-    const [userData, setUserData] = useState(initState);
-    const { username, password } = userData;
+    }
+    const [userData, setUserData] = useState(initState)
+    const { username, password } = userData
 
-    const [state, dispatch] = useContext(DataContext);
-    const { auth } = state;
+    const [state, dispatch] = useContext(DataContext)
+    const { auth } = state
 
-    const router = useRouter();
+    const router = useRouter()
 
     const handleChangeInput = (e) => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
-    };
+        const { name, value } = e.target
+        setUserData({ ...userData, [name]: value })
+    }
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        dispatch({ type: "NOTIFY", payload: { loading: true } });
+        dispatch({ type: "NOTIFY", payload: { loading: true } })
 
-        const res = await postData("auth/login", userData);
+        const res = await postData("auth/login", userData)
         if (res.err) {
             return dispatch({
                 type: "NOTIFY",
                 payload: { error: res.err },
-            });
+            })
         }
-        dispatch({ type: "NOTIFY", payload: { success: res.msg } });
+        dispatch({ type: "NOTIFY", payload: { success: res.msg } })
 
         dispatch({
             type: "AUTH",
             payload: { token: res.access_token, user: res.user },
-        });
+        })
 
         Cookies.set("refresh_token", res.refresh_token, {
             path: "api/auth/accessToken",
             expires: 7,
-        });
+        })
 
-        localStorage.setItem("firstLogin", true);
-    };
+        localStorage.setItem("firstLogin", true)
+    }
 
     useEffect(() => {
-        if (Object.keys(auth).length !== 0) router.push("/");
-    }, [auth]);
+        if (Object.keys(auth).length !== 0) router.push("/")
+    }, [auth])
     return (
-        <div className='flex flex-1 items-center justify-center mt-8'>
+        <div className='flex flex-1 justify-center h-[380px]'>
             <Head>
                 <title>Login Page</title>
             </Head>
@@ -120,7 +120,7 @@ const login = () => {
                 </form>
             </Card>
         </div>
-    );
-};
+    )
+}
 
-export default login;
+export default login

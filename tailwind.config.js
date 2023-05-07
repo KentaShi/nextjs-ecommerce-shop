@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const withMT = require("@material-tailwind/react/utils/withMT");
+const withMT = require("@material-tailwind/react/utils/withMT")
 module.exports = withMT({
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -26,6 +26,10 @@ module.exports = withMT({
             "2xl": "1536px",
             // => @media (min-width: 1536px) { ... }
         },
+        colors: {
+            "teal-light": "#ccfbf1",
+            "teal-dark": "#042f2e",
+        },
         extend: {
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -35,4 +39,4 @@ module.exports = withMT({
         },
     },
     plugins: [],
-});
+})

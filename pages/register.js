@@ -1,4 +1,4 @@
-import Head from "next/head";
+import Head from "next/head"
 import {
     Card,
     CardHeader,
@@ -8,13 +8,13 @@ import {
     Input,
     Checkbox,
     Button,
-} from "@material-tailwind/react";
-import Link from "next/link";
-import { useState, useContext, useEffect } from "react";
-import valid from "@/utils/valid";
-import { DataContext } from "@/store/globalState";
-import { postData } from "@/utils/fetchData";
-import { useRouter } from "next/router";
+} from "@material-tailwind/react"
+import Link from "next/link"
+import { useState, useContext, useEffect } from "react"
+import valid from "@/utils/valid"
+import { DataContext } from "@/store/globalState"
+import { postData } from "@/utils/fetchData"
+import { useRouter } from "next/router"
 
 const register = () => {
     const initState = {
@@ -22,44 +22,44 @@ const register = () => {
         username: "",
         password: "",
         confirmPassword: "",
-    };
-    const [userData, setUserData] = useState(initState);
-    const { fullName, username, password, confirmPassword } = userData;
+    }
+    const [userData, setUserData] = useState(initState)
+    const { fullName, username, password, confirmPassword } = userData
 
-    const [state, dispatch] = useContext(DataContext);
-    const { auth } = state;
+    const [state, dispatch] = useContext(DataContext)
+    const { auth } = state
 
-    const router = useRouter();
+    const router = useRouter()
 
     const handleChangeInput = (e) => {
-        const { name, value } = e.target;
-        setUserData({ ...userData, [name]: value });
-    };
+        const { name, value } = e.target
+        setUserData({ ...userData, [name]: value })
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const errMsg = valid(fullName, username, password, confirmPassword);
+        e.preventDefault()
+        const errMsg = valid(fullName, username, password, confirmPassword)
         if (errMsg) {
-            return dispatch({ type: "NOTIFY", payload: { error: errMsg } });
+            return dispatch({ type: "NOTIFY", payload: { error: errMsg } })
         }
-        dispatch({ type: "NOTIFY", payload: { loading: true } });
+        dispatch({ type: "NOTIFY", payload: { loading: true } })
 
-        const res = await postData("auth/register", userData);
+        const res = await postData("auth/register", userData)
         if (res.err) {
             return dispatch({
                 type: "NOTIFY",
                 payload: { error: res.err },
-            });
+            })
         }
-        return dispatch({ type: "NOTIFY", payload: { success: res.msg } });
-    };
+        return dispatch({ type: "NOTIFY", payload: { success: res.msg } })
+    }
 
     useEffect(() => {
-        if (Object.keys(auth).length !== 0) router.push("/");
-    }, [auth]);
+        if (Object.keys(auth).length !== 0) router.push("/")
+    }, [auth])
 
     return (
-        <div className='flex flex-1 items-center justify-center mt-8'>
+        <div className='flex flex-1 justify-center h-[480px]'>
             <Head>
                 <title>Sign Up Page</title>
             </Head>
@@ -132,7 +132,7 @@ const register = () => {
                 </form>
             </Card>
         </div>
-    );
-};
+    )
+}
 
-export default register;
+export default register

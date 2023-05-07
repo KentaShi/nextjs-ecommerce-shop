@@ -1,20 +1,25 @@
-import CartItem from "@/components/CartItem";
-import { DataContext } from "@/store/globalState";
-import { useContext } from "react";
+import CartItem from "@/components/CartItem"
+import { DataContext } from "@/store/globalState"
+import Head from "next/head"
+import Link from "next/link"
+import { useContext } from "react"
 
 const cart = () => {
-    const [state, dispatch] = useContext(DataContext);
+    const [state, dispatch] = useContext(DataContext)
     const {
         cart: { products, totalQty, totalPrice },
-    } = state;
+    } = state
     return (
-        <div>
+        <>
+            <Head>
+                <title>Cart</title>
+            </Head>
             {totalQty === 0 ? (
                 <div className='flex items-center justify-center'>
                     <p className='text-lg font-bold'>Cart is empty</p>
                 </div>
             ) : (
-                <div className='flex flex-row'>
+                <div className='flex flex-row w-3/4'>
                     <div className='flex flex-col flex-1'>
                         {products.map((item, index) => (
                             <CartItem
@@ -24,7 +29,7 @@ const cart = () => {
                             />
                         ))}
                     </div>
-                    <div className='flex-[0.5] mt-6 rounded-lg p-6 bg-teal-50 ml-6'>
+                    <div className='flex-[0.5] mt-6 rounded-lg p-6 bg-teal-50 ml-6 h-[250px]'>
                         <div className='mb-2 flex justify-between'>
                             <p className='text-gray-700'>Subtotal</p>
                             <p className='text-gray-700'>$129.99</p>
@@ -45,14 +50,16 @@ const cart = () => {
                                 </p>
                             </div>
                         </div>
-                        <button className='mt-6 w-full rounded-md bg-teal-500 py-1.5 font-medium text-blue-50 hover:bg-teat-600'>
-                            Check out
-                        </button>
+                        <Link href={"/order"}>
+                            <button className='mt-6 w-full rounded-md bg-teal-500 py-1.5 font-medium text-blue-50 hover:bg-teat-600'>
+                                Check out
+                            </button>
+                        </Link>
                     </div>
                 </div>
             )}
-        </div>
-    );
-};
+        </>
+    )
+}
 
-export default cart;
+export default cart

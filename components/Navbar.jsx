@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next/link"
 import {
     MobileNav,
     Typography,
@@ -10,44 +10,50 @@ import {
     Avatar,
     Card,
     IconButton,
-} from "@material-tailwind/react";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
-import { DataContext } from "@/store/globalState";
-import Cookies from "js-cookie";
+} from "@material-tailwind/react"
+import { ChevronDownIcon } from "@heroicons/react/24/outline"
+import { useRouter } from "next/router"
+import React, { useContext, useState } from "react"
+import { DataContext } from "@/store/globalState"
+import Cookies from "js-cookie"
 
 const Navbar = () => {
-    const router = useRouter();
-    const [state, dispatch] = useContext(DataContext);
+    const router = useRouter()
+    const [state, dispatch] = useContext(DataContext)
     const {
         auth,
         cart: { totalQty },
-    } = state;
+    } = state
 
     const isActive = (r) => {
         if (r === router.pathname) {
-            return " font-semibold";
+            return " font-semibold"
         } else {
-            return "";
+            return ""
         }
-    };
+    }
 
     const profileMenuItems = [
         { label: "My Profile", icon: "", path: "profile" },
         { label: "Sign Out", icon: "", path: "logout" },
-    ];
+    ]
 
     const ProfileMenu = ({ fullName, avatar }) => {
-        const [isMenuOpen, setIsMenuOpen] = useState(false);
-        const closeMenu = () => setIsMenuOpen(false);
+        const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+        const closeMenu = () => setIsMenuOpen(false)
+
         const handleLogout = (e) => {
-            e.preventDefault();
-            Cookies.remove("refresh_token", { path: "api/auth/accessToken" });
-            localStorage.removeItem("firstLogin");
-            dispatch({ type: "AUTH", payload: {} });
-            dispatch({ type: "NOTIFY", payload: { success: "Logged out." } });
-        };
+            e.preventDefault()
+            Cookies.remove("refresh_token", { path: "api/auth/accessToken" })
+            localStorage.removeItem("firstLogin")
+            dispatch({ type: "AUTH", payload: {} })
+            dispatch({ type: "NOTIFY", payload: { success: "Logged out." } })
+        }
+
+        const handleProfile = (e) => {
+            router.push("/profile")
+        }
         return (
             <Menu
                 open={isMenuOpen}
@@ -78,12 +84,16 @@ const Navbar = () => {
                 </MenuHandler>
                 <MenuList className='p-1'>
                     {profileMenuItems.map(({ label, path }, key) => {
-                        const isLastItem = key === profileMenuItems.length - 1;
+                        const isLastItem = key === profileMenuItems.length - 1
                         return (
                             <MenuItem
                                 key={label}
                                 onClick={
-                                    path === "logout" ? handleLogout : closeMenu
+                                    path === "logout"
+                                        ? handleLogout
+                                        : path === "profile"
+                                        ? handleProfile
+                                        : closeMenu
                                 }
                                 className={`flex items-center gap-2 rounded ${
                                     isLastItem
@@ -100,12 +110,12 @@ const Navbar = () => {
                                     {label}
                                 </Typography>
                             </MenuItem>
-                        );
+                        )
                     })}
                 </MenuList>
             </Menu>
-        );
-    };
+        )
+    }
 
     return (
         <header className='border-b backdrop-blur bg-teal-100/80 fixed w-full top-0 left-0 z-30'>
@@ -178,15 +188,15 @@ const Navbar = () => {
                     ) : (
                         <div className='ml-2'>
                             <ProfileMenu
-                                fullName={auth.user.fullName}
-                                avatar={auth.user.avatar}
+                                fullName={auth?.user?.fullName}
+                                avatar={auth?.user?.avatar}
                             />
                         </div>
                     )}
                 </div>
             </div>
         </header>
-    );
-};
+    )
+}
 
-export default Navbar;
+export default Navbar
