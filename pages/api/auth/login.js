@@ -1,37 +1,37 @@
-import User from "@/models/userModel";
-import valid from "@/utils/valid";
-import bcrypt from "bcrypt";
+import User from "@/models/User"
+import valid from "@/utils/valid"
+import bcrypt from "bcrypt"
 
 import {
     createAccessToken,
     createRefreshToken,
-} from "../../../utils/generateToken";
+} from "../../../utils/generateToken"
 
 export default async (req, res) => {
     switch (req.method) {
         case "POST":
-            await login(req, res);
-            break;
+            await login(req, res)
+            break
     }
-};
+}
 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password } = req.body
 
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username })
         if (!user) {
-            return res.status(400).json({ err: "This user does not exist!" });
+            return res.status(400).json({ err: "This user does not exist!" })
         }
 
-        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        const isPasswordMatch = await bcrypt.compare(password, user.password)
 
         if (!isPasswordMatch) {
-            return res.status(400).json({ err: "Incorrect Password" });
+            return res.status(400).json({ err: "Incorrect Password" })
         }
 
-        const access_token = createAccessToken({ id: user._id });
-        const refresh_token = createRefreshToken({ id: user._id });
+        const access_token = createAccessToken({ id: user._id })
+        const refresh_token = createRefreshToken({ id: user._id })
 
         return res.status(200).json({
             msg: "Sign In Successfully!",
@@ -44,8 +44,8 @@ const login = async (req, res) => {
                 root: user.root,
                 avatar: user.avatar,
             },
-        });
+        })
     } catch (error) {
-        return res.status(500).json({ err: error });
+        return res.status(500).json({ err: error })
     }
-};
+}

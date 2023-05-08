@@ -31,42 +31,43 @@ const order = () => {
     }, [])
 
     return (
-        <div className='flex flex-col justify-center rounded-lg p-6 bg-teal-50 ml-6 w-[480px] h-[300px]'>
-            <Head>
-                <title>Order</title>
-            </Head>
-            <p className='text-lg font-bold flex justify-center pb-3'>
-                Payment Information
-            </p>
-            <hr />
-            <div className='mb-2 flex justify-between'>
-                <p className='text-gray-700'>Full Name:</p>
-                <p className='text-gray-700'>{user?.fullName}</p>
-            </div>
-            <div class='mb-2 flex justify-between'>
-                <p className='text-gray-700'>Address:</p>
-                <p className='text-gray-700'>{user?.address}</p>
-            </div>
-            <div class='mb-2 flex justify-between'>
-                <p className='text-gray-700'>Phone Number:</p>
-                <p className='text-gray-700'>{user?.phone}</p>
-            </div>
-            <hr className='my-4' />
-            <div className='flex justify-between'>
-                <p className='text-lg font-bold'>Total</p>
-                <div className=''>
-                    <p className='mb-1 text-lg font-bold'>${totalPrice}</p>
-                    <p className='text-sm text-gray-700'>including VAT</p>
+        <div className='flex justify-center'>
+            <div className='flex flex-col justify-center rounded-lg p-6 bg-coca-lightest-95 ml-6 w-[480px] h-[300px]'>
+                <Head>
+                    <title>Xác Nhận Đặt Hàng</title>
+                </Head>
+                <p className='text-lg font-bold flex justify-center pb-3'>
+                    Payment Information
+                </p>
+                <hr />
+                <div className='mb-2 flex justify-between'>
+                    <p className='text-gray-700'>Họ và Tên:</p>
+                    <p className='text-gray-700'>{user?.fullName}</p>
                 </div>
-            </div>
+                <div class='mb-2 flex justify-between'>
+                    <p className='text-gray-700'>Địa chỉ:</p>
+                    <p className='text-gray-700'>{user?.address}</p>
+                </div>
+                <div class='mb-2 flex justify-between'>
+                    <p className='text-gray-700'>Số điện thoại:</p>
+                    <p className='text-gray-700'>{user?.phone}</p>
+                </div>
+                <hr className='my-4' />
+                <div className='flex justify-between'>
+                    <p className='text-lg font-bold'>Tổng thanh toán</p>
+                    <div className=''>
+                        <p className='mb-1 text-lg font-bold'>{totalPrice}đ</p>
+                    </div>
+                </div>
 
-            <button
-                type='button'
-                onClick={handleCheckout}
-                className='mt-6 w-full rounded-md bg-teal-500 py-1.5 font-medium text-blue-50 hover:bg-teat-600'
-            >
-                Check out
-            </button>
+                <button
+                    type='button'
+                    onClick={handleCheckout}
+                    className='mt-6 w-full rounded-md bg-coca-dark py-1.5 font-medium text-blue-50 hover:bg-coca-darkest'
+                >
+                    Xác Nhận
+                </button>
+            </div>
         </div>
     )
 }

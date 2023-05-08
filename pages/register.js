@@ -64,14 +64,15 @@ const register = () => {
                 <title>Sign Up Page</title>
             </Head>
             <Card className='w-96 p-8'>
-                <Typography variant='h3' color='teal'>
+                <p className='text-coca-darkest font-extrabold text-3xl'>
                     Sign Up
-                </Typography>
+                </p>
                 <form
                     onSubmit={handleSubmit}
                     className='flex flex-col gap-4 mt-8 mb-2 w-80 max-w-screen-lg'
                 >
                     <Input
+                        color='brown'
                         label='Full Name'
                         size='lg'
                         name='fullName'
@@ -79,6 +80,7 @@ const register = () => {
                         onChange={handleChangeInput}
                     />
                     <Input
+                        color='brown'
                         label='Username'
                         size='lg'
                         name='username'
@@ -86,6 +88,7 @@ const register = () => {
                         onChange={handleChangeInput}
                     />
                     <Input
+                        color='brown'
                         label='Password'
                         size='lg'
                         name='password'
@@ -95,6 +98,7 @@ const register = () => {
                         autoComplete='on'
                     />
                     <Input
+                        color='brown'
                         label='Confirm Password'
                         size='lg'
                         name='confirmPassword'
@@ -103,14 +107,12 @@ const register = () => {
                         onChange={handleChangeInput}
                         autoComplete='on'
                     />
-                    <Button
-                        color='cyan'
-                        variant='gradient'
+                    <button
                         type='submit'
-                        fullWidth
+                        className='bg-coca-medium text-white rounded-lg py-2 hover:shadow-lg hover:shadow-coca-medium transition duration-200 uppercase font-bold'
                     >
-                        Sign Up
-                    </Button>
+                        Sign up
+                    </button>
 
                     <div className='flex flex-row items-center justify-center mt-6'>
                         <Typography
@@ -122,7 +124,7 @@ const register = () => {
                         <Link href={"/login"}>
                             <Typography
                                 variant='small'
-                                color='blue'
+                                color='brown'
                                 className='ml-1 font-bold'
                             >
                                 Sign In

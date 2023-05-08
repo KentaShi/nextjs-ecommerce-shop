@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React, { useContext } from "react";
+import Link from "next/link"
+import React, { useContext } from "react"
 
 import {
     Card,
@@ -7,37 +7,37 @@ import {
     CardBody,
     CardFooter,
     Typography,
-} from "@material-tailwind/react";
+} from "@material-tailwind/react"
 
-import { DataContext } from "@/store/globalState";
+import { DataContext } from "@/store/globalState"
 
 const Product = ({ product }) => {
-    const { _id, name, price, inStock, images } = product;
+    const { _id, name, price, inStock, images } = product
 
-    const [state, dispatch] = useContext(DataContext);
+    const [state, dispatch] = useContext(DataContext)
     const {
         cart: { products, totalQty, totalPrice },
-    } = state;
+    } = state
 
     const addToCart = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
         if (inStock === 0) {
             return dispatch({
                 type: "NOTIFY",
                 payload: { error: "This product is out of stock" },
-            });
+            })
         }
 
         const checkProductInCart = products.find((item) => {
-            return item.product._id === _id;
-        });
+            return item.product._id === _id
+        })
 
         if (checkProductInCart) {
             return dispatch({
                 type: "NOTIFY",
                 payload: { error: "This product is available in cart" },
-            });
+            })
         }
 
         dispatch({
@@ -47,25 +47,27 @@ const Product = ({ product }) => {
                 totalQty: totalQty + 1,
                 totalPrice: totalPrice + product.price,
             },
-        });
+        })
         dispatch({
             type: "NOTIFY",
             payload: { success: "This product is added to your cart" },
-        });
-    };
+        })
+    }
     return (
-        <div className='my-10'>
-            <Card className='w-96'>
+        <div className='w-52'>
+            <Card className=''>
                 <Link href={`/product/${_id}`}>
-                    <CardHeader color='blue' className='relative h-56'>
-                        <img
-                            src={images[0].url}
-                            alt='img-blur-shadow'
-                            className='h-full w-full'
-                        />
-                    </CardHeader>
+                    <img
+                        className='p-1 rounded-xl'
+                        style={{ height: "auto", maxWidth: "100%" }}
+                        src={images[0].url}
+                        alt='img-blur-shadow'
+                    />
                     <CardBody className='text-center'>
-                        <Typography variant='h5' className='mb-2'>
+                        <Typography
+                            variant='h6'
+                            className='mb-2 text-coca-darkest'
+                        >
                             {name}
                         </Typography>
                     </CardBody>
@@ -74,7 +76,7 @@ const Product = ({ product }) => {
                     divider
                     className='flex items-center justify-between py-3'
                 >
-                    <Typography variant='small'>${price}</Typography>
+                    <Typography variant='small'>{price}đ</Typography>
                     <Typography
                         variant='small'
                         color='gray'
@@ -99,7 +101,7 @@ const Product = ({ product }) => {
                 </CardFooter>
             </Card>
         </div>
-    );
-};
+    )
+}
 
-export default Product;
+export default Product

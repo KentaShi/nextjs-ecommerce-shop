@@ -69,14 +69,15 @@ const login = () => {
                 <title>Login Page</title>
             </Head>
             <Card className='w-96 p-8'>
-                <Typography variant='h3' color='teal'>
+                <p className='text-coca-darkest font-extrabold text-3xl'>
                     Sign In
-                </Typography>
+                </p>
                 <form
                     onSubmit={handleSubmit}
                     className='flex flex-col gap-4 mt-8 mb-2 w-80 max-w-screen-lg'
                 >
                     <Input
+                        color='brown'
                         label='Username'
                         size='lg'
                         name='username'
@@ -84,6 +85,7 @@ const login = () => {
                         onChange={handleChangeInput}
                     />
                     <Input
+                        color='brown'
                         label='Password'
                         size='lg'
                         type='password'
@@ -91,14 +93,12 @@ const login = () => {
                         value={password}
                         onChange={handleChangeInput}
                     />
-                    <Button
+                    <button
                         type='submit'
-                        color='cyan'
-                        variant='gradient'
-                        fullWidth
+                        className='bg-coca-medium text-white rounded-lg py-2 hover:shadow-lg hover:shadow-coca-medium transition duration-200 uppercase font-semibold'
                     >
                         Sign In
-                    </Button>
+                    </button>
 
                     <div className='flex flex-row items-center justify-center mt-6'>
                         <Typography
@@ -110,7 +110,7 @@ const login = () => {
                         <Link href={"/register"}>
                             <Typography
                                 variant='small'
-                                color='blue'
+                                color='brown'
                                 className='ml-1 font-bold'
                             >
                                 Sign Up

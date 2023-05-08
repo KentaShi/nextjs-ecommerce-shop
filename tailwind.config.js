@@ -27,8 +27,12 @@ module.exports = withMT({
             // => @media (min-width: 1536px) { ... }
         },
         colors: {
-            "teal-light": "#ccfbf1",
-            "teal-dark": "#042f2e",
+            "coca-lightest-95": "#f8f0ec",
+            "coca-lightest": "#f2e1d9",
+            "coca-light": "#a87660",
+            "coca-medium": "#9d5836",
+            "coca-dark": "#674544",
+            "coca-darkest": "#401c18",
         },
         extend: {
             backgroundImage: {

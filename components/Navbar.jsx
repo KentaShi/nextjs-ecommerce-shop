@@ -118,30 +118,16 @@ const Navbar = () => {
     }
 
     return (
-        <header className='border-b backdrop-blur bg-teal-100/80 fixed w-full top-0 left-0 z-30'>
+        <header className='border-b backdrop-blur bg-coca-lightest/60 fixed w-full top-0 left-0 z-30'>
             <div className='container px-4 py-5 mx-auto flex items-center justify-around'>
                 <div className='flex'>
                     <Link href={`/`}>
                         <div className={"flex items-center" + isActive("/")}>
-                            <p className='ml-2 text-lg 2xl:text-xl'>Logo</p>
+                            <p className='ml-2 text-lg 2xl:text-xl text-coca-darkest font-bold'>
+                                AnhAnh's Coffee
+                            </p>
                         </div>
                     </Link>
-                </div>
-
-                <div className='flex flex-row items-center space-x-3 bg-white rounded-lg'>
-                    <div className='flex flex-wrap justify-between'>
-                        <input
-                            type='text'
-                            className='w-24 h-10 px-4 text-sm text-gray-800 bg-white border-gray-200 rounded-lg transition-all duration-300 focus:w-96 focus:outline-none'
-                            placeholder='Search...'
-                        />
-                    </div>
-                    <button
-                        type='button'
-                        className='flex items-center justify-center h-10 px-5 border-l text-sm font-medium text-center text-teal-950 transition-colors rounded-r-lg duration-300 transform bg-white hover:bg-teal-500'
-                    >
-                        Search
-                    </button>
                 </div>
 
                 <div className='flex flex-row justify-end items-center'>
