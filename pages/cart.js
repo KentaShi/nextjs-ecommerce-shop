@@ -34,12 +34,12 @@ const cart = () => {
                             <p className='text-lg font-bold'>Tổng cộng:</p>
                             <div className=''>
                                 <p className='mb-1 text-lg font-bold'>
-                                    {totalPrice}đ
+                                    {totalPrice.toLocaleString("de-DE")}đ
                                 </p>
                             </div>
                         </div>
                         <Link href={"/order"}>
-                            <button className='mt-6 w-full rounded-md bg-coca-darkest py-1.5 font-medium text-blue-50 hover:bg-teat-600'>
+                            <button className='mt-6 w-full rounded-md bg-coca-medium py-1.5 font-medium text-blue-50 hover:bg-coca-medium-dark'>
                                 Đặt Hàng
                             </button>
                         </Link>

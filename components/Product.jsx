@@ -76,7 +76,9 @@ const Product = ({ product }) => {
                     divider
                     className='flex items-center justify-between py-3'
                 >
-                    <Typography variant='small'>{price}đ</Typography>
+                    <Typography variant='small'>
+                        {price.toLocaleString("de-DE")}đ
+                    </Typography>
                     <Typography
                         variant='small'
                         color='gray'

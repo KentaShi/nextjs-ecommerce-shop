@@ -119,13 +119,13 @@ const CartItem = ({ product, qty }) => {
                     </div>
                 </div>
                 <div className='flex flex-row justify-between'>
-                    <span className='text-coca-darkest text-base font-medium'>
-                        {price}đ
+                    <span className='text-coca-medium-dark text-base font-medium'>
+                        {price.toLocaleString("de-DE")}đ
                     </span>
                     <Fragment>
                         <Button
                             onClick={handleOpenDialog}
-                            className='bg-red-300 rounded p-2 text-white hover:bg-red-400'
+                            className='bg-red-300 rounded p-2 text-white hover:bg-red-400 hover:shadow-coca-light'
                         >
                             <AiOutlineDelete />
                         </Button>

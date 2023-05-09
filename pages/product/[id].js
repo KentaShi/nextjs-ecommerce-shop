@@ -95,10 +95,10 @@ const ProductDetail = ({ product }) => {
                         </h2>
                         <div className='flex flex-row justify-between'>
                             <div className='rounded-lg bg-white flex py-2 w-[72px] h-[52px]'>
-                                <span className='font-medium text-coca-darkest text-lg'>
-                                    {price}
+                                <span className='font-medium text-coca-medium text-lg'>
+                                    {price.toLocaleString("de-DE")}
                                 </span>
-                                <span className='mr-1 mt-1 text-coca-darkest'>
+                                <span className='mr-1 mt-1 text-coca-medium'>
                                     đ
                                 </span>
                             </div>
@@ -125,7 +125,7 @@ const ProductDetail = ({ product }) => {
                     </div>
                     <button
                         onClick={addToCart}
-                        className='h-14 px-6 py-2 bg-coca-light text-coca-lightest hover:bg-coca-medium font-semibold rounded-full'
+                        className='h-14 px-6 py-2 bg-coca-medium text-coca-lightest-95 hover:bg-coca-medium-dark font-semibold rounded-full'
                     >
                         Thêm vào giỏ hàng
                     </button>

@@ -56,14 +56,16 @@ const order = () => {
                 <div className='flex justify-between'>
                     <p className='text-lg font-bold'>Tổng thanh toán</p>
                     <div className=''>
-                        <p className='mb-1 text-lg font-bold'>{totalPrice}đ</p>
+                        <p className='mb-1 text-lg font-bold'>
+                            {totalPrice.toLocaleString("de-DE")}đ
+                        </p>
                     </div>
                 </div>
 
                 <button
                     type='button'
                     onClick={handleCheckout}
-                    className='mt-6 w-full rounded-md bg-coca-dark py-1.5 font-medium text-blue-50 hover:bg-coca-darkest'
+                    className='mt-6 w-full rounded-md bg-coca-medium py-1.5 font-semibold text-coca-lightest hover:bg-coca-medium-dark'
                 >
                     Xác Nhận
                 </button>

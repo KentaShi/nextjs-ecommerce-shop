@@ -8,21 +8,28 @@ import Head from "next/head"
 export default function Home(props) {
     const [products, setProducts] = useState(props.products)
     return (
-        <div className='flex justify-center'>
+        <>
             <Head>
                 <title>Trang Chủ</title>
             </Head>
-            <div>Đồ Uống</div>
-            <div className='grid grid-cols-4 gap-4 justify-items-center content-start'>
-                {products.length === 0 ? (
-                    <h2>No Products</h2>
-                ) : (
-                    products.map((product) => (
-                        <Product key={product._id} product={product} />
-                    ))
-                )}
+
+            <div className='flex flex-col justify-center items-center'>
+                <div>
+                    <p className='text-lg font-semibold text-coca-darkest mb-4'>
+                        Thức Uống
+                    </p>
+                </div>
+                <div className='grid grid-cols-4 gap-4 justify-items-center content-start max-w-[880px]'>
+                    {products.length === 0 ? (
+                        <h2>No Products</h2>
+                    ) : (
+                        products.map((product) => (
+                            <Product key={product._id} product={product} />
+                        ))
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     )
 }
 
