@@ -34,8 +34,9 @@ const Navbar = () => {
     }
 
     const profileMenuItems = [
-        { label: "My Profile", icon: "", path: "profile" },
-        { label: "Sign Out", icon: "", path: "logout" },
+        { label: "Thông Tin Cá Nhân", icon: "", path: "profile" },
+        { label: "Đơn Hàng", icon: "", path: "order" },
+        { label: "Đăng Xuất", icon: "", path: "logout" },
     ]
 
     const ProfileMenu = ({ fullName, avatar }) => {
@@ -53,6 +54,9 @@ const Navbar = () => {
 
         const handleProfile = (e) => {
             router.push("/profile")
+        }
+        const handleOrder = (e) => {
+            router.push("/order")
         }
         return (
             <Menu
@@ -93,6 +97,8 @@ const Navbar = () => {
                                         ? handleLogout
                                         : path === "profile"
                                         ? handleProfile
+                                        : path === "order"
+                                        ? handleOrder
                                         : closeMenu
                                 }
                                 className={`flex items-center gap-2 rounded ${

@@ -2,16 +2,40 @@ import Head from "next/head"
 import React, { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/store/globalState"
 import { useRouter } from "next/router"
+import { updateData } from "@/utils/fetchData"
 
 const profile = () => {
     const [state, dispatch] = useContext(DataContext)
     const {
-        auth: { user },
+        auth: { user, token },
     } = state
 
     const router = useRouter()
 
+    const initState = {
+        fullName: "",
+        address: "",
+        phone: "",
+    }
+    const [data, setData] = useState(initState)
+    const { fullName, address, phone } = data
+
     const [isEditing, setIsEditing] = useState(false)
+
+    useEffect(() => {
+        if (user)
+            setData({
+                ...data,
+                fullName: user.fullName,
+                address: user.address,
+                phone: user.phone,
+            })
+    }, [user])
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setData({ ...data, [name]: value })
+    }
 
     const handleEditProfile = (e) => {
         e.preventDefault()
@@ -19,9 +43,22 @@ const profile = () => {
         setIsEditing(!isEditing)
     }
 
-    // useEffect(() => {
-    //     if (!user) router.push("/login")
-    // }, [])
+    const handleUpdate = (e) => {
+        e.preventDefault()
+
+        updateData("user", { fullName, address, phone }, token).then((res) => {
+            if (res.err)
+                return dispatch({ type: "NOTIFY", payload: { error: res.err } })
+
+            dispatch({
+                type: "AUTH",
+                payload: { token: token, user: res.user },
+            })
+
+            return dispatch({ type: "NOTIFY", payload: { success: res.msg } })
+        })
+    }
+
     return (
         <>
             <Head>
@@ -46,7 +83,9 @@ const profile = () => {
                         <p className='text-gray-700 font-bold'>Họ và Tên:</p>
                         {isEditing ? (
                             <input
-                                value={user?.fullName}
+                                onChange={handleChange}
+                                name='fullName'
+                                value={fullName}
                                 type='text'
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
@@ -58,7 +97,9 @@ const profile = () => {
                         <p className='text-gray-700 font-bold'>Địa chỉ:</p>
                         {isEditing ? (
                             <textarea
-                                value={user?.address}
+                                onChange={handleChange}
+                                name='address'
+                                value={address}
                                 type='text'
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
@@ -72,7 +113,9 @@ const profile = () => {
                         </p>
                         {isEditing ? (
                             <input
-                                value={user?.phone}
+                                onChange={handleChange}
+                                name='phone'
+                                value={phone}
                                 type='text'
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
@@ -82,7 +125,11 @@ const profile = () => {
                     </div>
                     {isEditing && (
                         <div className='flex justify-center'>
-                            <button className='w-[100px] bg-coca-medium hover:bg-coca-medium-dark text-coca-lightest rounded-lg py-2'>
+                            <button
+                                type='button'
+                                onClick={handleUpdate}
+                                className='w-[100px] bg-coca-medium hover:bg-coca-medium-dark text-coca-lightest rounded-lg py-2'
+                            >
                                 Lưu
                             </button>
                         </div>

@@ -2,15 +2,21 @@ import React, { useState, useContext } from "react"
 import { getData } from "@/utils/fetchData"
 import { DataContext } from "@/store/globalState"
 import Head from "next/head"
+import { useRouter } from "next/router"
 
 const ProductDetail = ({ product }) => {
     const { name, description, price, images } = product
     const [indexImg, setIndexImg] = useState(0)
     const [qty, setQty] = useState(1)
 
+    const router = useRouter()
+
     const [state, dispatch] = useContext(DataContext)
     const {
         cart: { products, totalQty, totalPrice },
+    } = state
+    const {
+        auth: { user },
     } = state
 
     const handleMinus = (e) => {
@@ -31,6 +37,8 @@ const ProductDetail = ({ product }) => {
     const addToCart = (e) => {
         e.preventDefault()
 
+        if (!user) return router.push("/login")
+
         const checkProductInCart = products.find((item) => {
             return item.product._id === product._id
         })
@@ -38,7 +46,9 @@ const ProductDetail = ({ product }) => {
         if (checkProductInCart) {
             return dispatch({
                 type: "NOTIFY",
-                payload: { error: "This product is available in cart" },
+                payload: {
+                    error: "Sản phẩm này đã có trong giỏ hàng của bạn!",
+                },
             })
         }
 
@@ -52,7 +62,7 @@ const ProductDetail = ({ product }) => {
         })
         dispatch({
             type: "NOTIFY",
-            payload: { success: "This product is added to your cart" },
+            payload: { success: "Đã thêm vào giỏ hàng!" },
         })
     }
     return (

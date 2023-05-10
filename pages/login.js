@@ -61,7 +61,7 @@ const login = () => {
     }
 
     useEffect(() => {
-        if (Object.keys(auth).length !== 0) router.push("/")
+        if (Object.keys(auth).length !== 0) router.back()
     }, [auth])
     return (
         <div className='flex flex-1 justify-center h-[380px]'>
