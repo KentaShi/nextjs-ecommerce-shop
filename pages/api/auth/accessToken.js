@@ -38,6 +38,8 @@ export default async (req, res) => {
                 role: user.role,
                 root: user.root,
                 avatar: user.avatar,
+                address: user.address,
+                phone: user.phone,
             },
         })
     } catch (error) {

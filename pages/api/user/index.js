@@ -14,11 +14,10 @@ const updateUser = async (req, res) => {
         const result = await auth(req, res)
         const { fullName, address, phone } = req.body
 
-        const userUpdated = await User.findByIdAndUpdate(
+        const userUpdated = await User.findOneAndUpdate(
             { _id: result._id },
             { fullName: fullName, address: address, phone: phone }
         ).select("-password")
-
         return res.status(200).json({
             msg: "Update Success",
             user: {

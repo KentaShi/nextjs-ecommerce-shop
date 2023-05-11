@@ -10,9 +10,7 @@ const auth = async (req, res) => {
 
     const user = await User.findOne({ _id: decoded.id })
 
-    return res
-        .status(200)
-        .json({ id: user._id, role: user.role, root: user.root })
+    return { _id: user._id, role: user.role, root: user.root }
 }
 
 export default auth

@@ -32,14 +32,14 @@ const order = () => {
 
     return (
         <div className='flex justify-center'>
-            <div className='flex flex-col justify-center rounded-lg p-6 bg-coca-lightest-95 ml-6 w-[480px] h-[300px]'>
+            <div className='flex flex-col justify-center rounded-lg p-6 shadow-lg ml-6 w-[480px] h-auto'>
                 <Head>
                     <title>Xác Nhận Đặt Hàng</title>
                 </Head>
                 <p className='text-lg font-bold flex justify-center pb-3'>
                     Payment Information
                 </p>
-                <hr />
+                <hr className='my-4' />
                 <div className='mb-2 flex justify-between'>
                     <p className='text-gray-700'>Họ và Tên:</p>
                     <p className='text-gray-700'>{user?.fullName}</p>

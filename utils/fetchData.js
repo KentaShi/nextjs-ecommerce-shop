@@ -32,8 +32,7 @@ export const updateData = async (url, post, token) => {
             },
         })
 
-        const data = await res.data
-        return data
+        return res.data
     } catch (error) {
         return error.response.data
     }

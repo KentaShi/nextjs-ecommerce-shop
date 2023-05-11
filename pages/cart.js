@@ -2,6 +2,7 @@ import CartItem from "@/components/CartItem"
 import { DataContext } from "@/store/globalState"
 import Head from "next/head"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useContext } from "react"
 
 const cart = () => {
@@ -9,6 +10,25 @@ const cart = () => {
     const {
         cart: { products, totalQty, totalPrice },
     } = state
+
+    const {
+        auth: { user },
+    } = state
+
+    const router = useRouter()
+
+    const handleCheckout = (e) => {
+        e.preventDefault()
+
+        if (!user?.address || !user?.phone) {
+            dispatch({
+                type: "NOTIFY",
+                payload: { error: "Vui lòng cập nhật địa chỉ, số điện thoại!" },
+            })
+            return router.push("/profile")
+        }
+        return router.push("/thankyou")
+    }
     return (
         <div className='flex justify-center'>
             <Head>
@@ -38,11 +58,13 @@ const cart = () => {
                                 </p>
                             </div>
                         </div>
-                        <Link href={"/order"}>
-                            <button className='mt-6 w-full rounded-md bg-coca-medium py-1.5 font-medium text-blue-50 hover:bg-coca-medium-dark'>
-                                Đặt Hàng
-                            </button>
-                        </Link>
+
+                        <button
+                            onClick={handleCheckout}
+                            className='mt-6 w-full rounded-md bg-coca-medium py-1.5 font-medium text-blue-50 hover:bg-coca-medium-dark'
+                        >
+                            Thanh Toán
+                        </button>
                     </div>
                 </div>
             )}

@@ -2,7 +2,7 @@ import Head from "next/head"
 import React, { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/store/globalState"
 import { useRouter } from "next/router"
-import { updateData } from "@/utils/fetchData"
+import { getData, updateData } from "@/utils/fetchData"
 
 const profile = () => {
     const [state, dispatch] = useContext(DataContext)
@@ -26,11 +26,13 @@ const profile = () => {
         if (user)
             setData({
                 ...data,
-                fullName: user.fullName,
-                address: user.address,
-                phone: user.phone,
+                fullName: user?.fullName,
+                address: user?.address,
+                phone: user?.phone,
             })
-    }, [user])
+    }, [state])
+
+    console.log(user)
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -46,7 +48,7 @@ const profile = () => {
     const handleUpdate = (e) => {
         e.preventDefault()
 
-        updateData("user", { fullName, address, phone }, token).then((res) => {
+        updateData("user", data, token).then((res) => {
             if (res.err)
                 return dispatch({ type: "NOTIFY", payload: { error: res.err } })
 
@@ -57,6 +59,8 @@ const profile = () => {
 
             return dispatch({ type: "NOTIFY", payload: { success: res.msg } })
         })
+
+        setIsEditing(false)
     }
 
     return (
@@ -69,7 +73,7 @@ const profile = () => {
                     <div className='flex flex-row justify-between items-center'>
                         <img
                             src={user?.avatar}
-                            class='w-20 border-4 border-coca-lightest-95 rounded-full'
+                            className='w-20 border-4 border-coca-lightest-95 rounded-full'
                         />
                         <button
                             onClick={handleEditProfile}
@@ -90,10 +94,10 @@ const profile = () => {
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
                         ) : (
-                            <p className='text-gray-700'>{user?.fullName}</p>
+                            <p className='text-gray-700'>{fullName}</p>
                         )}
                     </div>
-                    <div class='mb-2 flex justify-between border-t-2 py-2'>
+                    <div className='mb-2 flex justify-between border-t-2 py-2'>
                         <p className='text-gray-700 font-bold'>Địa chỉ:</p>
                         {isEditing ? (
                             <textarea
@@ -104,10 +108,10 @@ const profile = () => {
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
                         ) : (
-                            <p className='text-gray-700'>{user?.address}</p>
+                            <p className='text-gray-700'>{address}</p>
                         )}
                     </div>
-                    <div class='mb-2 flex justify-between border-t-2 py-2'>
+                    <div className='mb-2 flex justify-between border-t-2 py-2'>
                         <p className='text-gray-700 font-bold'>
                             Số điện thoại:
                         </p>
@@ -120,7 +124,7 @@ const profile = () => {
                                 className='rounded-lg  p-2 border-2 focus:ring-1 focus:ring-coca-medium focus:outline-none transition-all duration-300'
                             />
                         ) : (
-                            <p className='text-gray-700'>{user?.phone}</p>
+                            <p className='text-gray-700'>{phone}</p>
                         )}
                     </div>
                     {isEditing && (
@@ -139,5 +143,7 @@ const profile = () => {
         </>
     )
 }
+
+// export async function getServerSideProps() {}
 
 export default profile
