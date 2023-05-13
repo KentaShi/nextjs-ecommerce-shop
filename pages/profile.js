@@ -1,14 +1,14 @@
 import Head from "next/head"
 import React, { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/store/globalState"
-import { useRouter } from "next/router"
+import Router, { useRouter } from "next/router"
 import { getData, updateData } from "@/utils/fetchData"
 
 const profile = () => {
     const [state, dispatch] = useContext(DataContext)
-    const {
-        auth: { user, token },
-    } = state
+    const { auth } = state
+    const { user, token } = auth
+    console.log(user)
 
     const router = useRouter()
 
@@ -23,16 +23,25 @@ const profile = () => {
     const [isEditing, setIsEditing] = useState(false)
 
     useEffect(() => {
-        if (user)
+        if (!user) {
+            dispatch({
+                type: "NOTIFY",
+                payload: { success: "Vui lòng đăng nhập!" },
+            })
+            router.push("/login")
+        }
+    }, [])
+
+    useEffect(() => {
+        if (user) {
             setData({
                 ...data,
-                fullName: user?.fullName,
-                address: user?.address,
-                phone: user?.phone,
+                fullName: user.fullName,
+                address: user.address,
+                phone: user.phone,
             })
-    }, [state])
-
-    console.log(user)
+        }
+    }, [user])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -143,7 +152,5 @@ const profile = () => {
         </>
     )
 }
-
-// export async function getServerSideProps() {}
 
 export default profile

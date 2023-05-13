@@ -1,5 +1,6 @@
 import CartItem from "@/components/CartItem"
 import { DataContext } from "@/store/globalState"
+import { postData } from "@/utils/fetchData"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -12,13 +13,21 @@ const cart = () => {
     } = state
 
     const {
-        auth: { user },
+        auth: { user, token },
     } = state
 
     const router = useRouter()
 
-    const handleCheckout = (e) => {
+    const handleCheckout = async (e) => {
         e.preventDefault()
+
+        if (!user) {
+            dispatch({
+                type: "NOTIFY",
+                payload: { error: "Vui lòng đăng nhập!" },
+            })
+            return router.push("/login")
+        }
 
         if (!user?.address || !user?.phone) {
             dispatch({
@@ -27,7 +36,41 @@ const cart = () => {
             })
             return router.push("/profile")
         }
-        return router.push("/thankyou")
+
+        //create order and put in Order model, delete Cart state
+        const listproducts = products.map((item) => {
+            return { productID: item.product._id, quantity: item.qty }
+        })
+        const newOrder = {
+            userID: user._id,
+            products: listproducts,
+            totalQty,
+            totalPrice,
+            address: user.address,
+            phone: user.phone,
+        }
+
+        await postData("order", newOrder, token)
+            .then((res) => {
+                if (res.err) {
+                    return dispatch({
+                        type: "NOTIFY",
+                        payload: { error: res.err },
+                    })
+                }
+
+                dispatch({
+                    type: "ADD_TO_CART",
+                    payload: {},
+                })
+
+                const newOrder = { ...res.order, user: user }
+                dispatch({ type: "NOTIFY", payload: { success: res.msg } })
+                return router.push("/thankyou")
+            })
+            .catch((err) => {
+                return dispatch({ type: "NOTIFY", payload: { error: err } })
+            })
     }
     return (
         <div className='flex justify-center'>

@@ -12,7 +12,7 @@ import {
 import { DataContext } from "@/store/globalState"
 
 const Product = ({ product }) => {
-    const { _id, name, price, inStock, images } = product
+    const { _id, name, price, images } = product
 
     const [state, dispatch] = useContext(DataContext)
     const {
@@ -21,13 +21,6 @@ const Product = ({ product }) => {
 
     const addToCart = (e) => {
         e.preventDefault()
-
-        if (inStock === 0) {
-            return dispatch({
-                type: "NOTIFY",
-                payload: { error: "This product is out of stock" },
-            })
-        }
 
         const checkProductInCart = products.find((item) => {
             return item.product._id === _id

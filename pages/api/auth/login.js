@@ -38,11 +38,14 @@ const login = async (req, res) => {
             refresh_token,
             access_token,
             user: {
+                _id: user._id,
                 fullName: user.fullName,
                 username: user.username,
                 role: user.role,
                 root: user.root,
                 avatar: user.avatar,
+                address: user.address,
+                phone: user.phone,
             },
         })
     } catch (error) {

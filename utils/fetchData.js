@@ -2,10 +2,13 @@ import axios from "axios"
 
 const BASE_URL = process.env.BASE_URL
 
-export const postData = async (url, post) => {
+export const postData = async (url, post, token) => {
     try {
         const res = await axios.post(`${BASE_URL}/api/${url}`, post, {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+            },
         })
 
         return res.data

@@ -37,8 +37,6 @@ const ProductDetail = ({ product }) => {
     const addToCart = (e) => {
         e.preventDefault()
 
-        if (!user) return router.push("/login")
-
         const checkProductInCart = products.find((item) => {
             return item.product._id === product._id
         })
