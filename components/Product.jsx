@@ -29,7 +29,7 @@ const Product = ({ product }) => {
         if (checkProductInCart) {
             return dispatch({
                 type: "NOTIFY",
-                payload: { error: "This product is available in cart" },
+                payload: { error: `${name} đã có trong giỏ hàng!` },
             })
         }
 
@@ -43,7 +43,7 @@ const Product = ({ product }) => {
         })
         dispatch({
             type: "NOTIFY",
-            payload: { success: "This product is added to your cart" },
+            payload: { success: `Đã thêm ${name} vào giỏ hàng!` },
         })
     }
     return (

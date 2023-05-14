@@ -61,7 +61,7 @@ const cart = () => {
 
                 dispatch({
                     type: "ADD_TO_CART",
-                    payload: {},
+                    payload: { products: [], totalQty: 0, totalPrice: 0 },
                 })
 
                 const newOrder = { ...res.order, user: user }
@@ -77,7 +77,7 @@ const cart = () => {
             <Head>
                 <title>Giỏ Hàng Của Bạn</title>
             </Head>
-            {totalQty === 0 ? (
+            {totalQty === 0 || !products ? (
                 <div className='flex items-center justify-center'>
                     <p className='text-lg font-bold'>Cart is empty</p>
                 </div>

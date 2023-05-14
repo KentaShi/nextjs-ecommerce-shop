@@ -45,7 +45,7 @@ const ProductDetail = ({ product }) => {
             return dispatch({
                 type: "NOTIFY",
                 payload: {
-                    error: "Sản phẩm này đã có trong giỏ hàng của bạn!",
+                    error: `${name} đã có trong giỏ hàng!`,
                 },
             })
         }
@@ -60,7 +60,7 @@ const ProductDetail = ({ product }) => {
         })
         dispatch({
             type: "NOTIFY",
-            payload: { success: "Đã thêm vào giỏ hàng!" },
+            payload: { success: `Đã thêm ${name} vào giỏ hàng!` },
         })
     }
     return (

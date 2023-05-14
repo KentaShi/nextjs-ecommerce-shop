@@ -61,11 +61,11 @@ const register = () => {
     return (
         <div className='flex flex-1 justify-center h-[480px]'>
             <Head>
-                <title>Sign Up Page</title>
+                <title>Đăng Ký Thành Viên | AnhAnh Nè</title>
             </Head>
             <Card className='w-96 p-8'>
                 <p className='text-coca-darkest font-extrabold text-3xl'>
-                    Sign Up
+                    Đăng Ký
                 </p>
                 <form
                     onSubmit={handleSubmit}
@@ -111,7 +111,7 @@ const register = () => {
                         type='submit'
                         className='bg-coca-medium text-white rounded-lg py-2 hover:shadow-lg hover:shadow-coca-medium transition duration-200 uppercase font-bold'
                     >
-                        Sign up
+                        Đăng Ký
                     </button>
 
                     <div className='flex flex-row items-center justify-center mt-6'>
@@ -119,7 +119,7 @@ const register = () => {
                             variant='small'
                             className='flex justify-center'
                         >
-                            Have an account?
+                            Bạn đã có tài khoản?
                         </Typography>
                         <Link href={"/login"}>
                             <Typography
@@ -127,7 +127,7 @@ const register = () => {
                                 color='brown'
                                 className='ml-1 font-bold'
                             >
-                                Sign In
+                                Đăng Nhập
                             </Typography>
                         </Link>
                     </div>

@@ -3,8 +3,11 @@ import Order from "@/models/Order"
 
 export default async (req, res) => {
     switch (req.method) {
-        case "GET":
+        case "POST":
             await createOrder(req, res)
+            break
+        case "GET":
+            await getOrders(req, res)
             break
     }
 }
@@ -28,6 +31,26 @@ const createOrder = async (req, res) => {
             msg: "Order created successfully",
             order: newOrder,
         })
+    } catch (error) {
+        return res.status(500).json({ err: error.message })
+    }
+}
+
+const getOrders = async (req, res) => {
+    try {
+        //const user = await auth(req, res)
+        // const userID = user._id
+        // let orders
+        // if (userID) {
+        //     orders = await Order.find({ userID: userID })
+        // } else {
+        //     orders = await Order.find()
+        // }
+        let orders = await Order.find()
+        console.log(orders)
+        return res
+            .status(200)
+            .json({ status: "success", result: orders.length, orders })
     } catch (error) {
         return res.status(500).json({ err: error.message })
     }

@@ -66,11 +66,11 @@ const login = () => {
     return (
         <div className='flex flex-1 justify-center h-[380px]'>
             <Head>
-                <title>Login Page</title>
+                <title>Đăng Nhập | AnhAnh Nè</title>
             </Head>
             <Card className='w-96 p-8'>
                 <p className='text-coca-darkest font-extrabold text-3xl'>
-                    Sign In
+                    Đăng Nhập
                 </p>
                 <form
                     onSubmit={handleSubmit}
@@ -97,7 +97,7 @@ const login = () => {
                         type='submit'
                         className='bg-coca-medium text-white rounded-lg py-2 hover:shadow-lg hover:shadow-coca-medium transition duration-200 uppercase font-semibold'
                     >
-                        Sign In
+                        Đăng Nhập
                     </button>
 
                     <div className='flex flex-row items-center justify-center mt-6'>
@@ -105,7 +105,7 @@ const login = () => {
                             variant='small'
                             className='flex justify-center'
                         >
-                            Don't have an account?
+                            Bạn chưa có tài khoản?
                         </Typography>
                         <Link href={"/register"}>
                             <Typography
@@ -113,7 +113,7 @@ const login = () => {
                                 color='brown'
                                 className='ml-1 font-bold'
                             >
-                                Sign Up
+                                Đăng Ký
                             </Typography>
                         </Link>
                     </div>
