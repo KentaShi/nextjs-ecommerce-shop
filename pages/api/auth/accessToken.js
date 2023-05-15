@@ -33,6 +33,7 @@ export default async (req, res) => {
         return res.status(200).json({
             access_token,
             user: {
+                _id: user._id,
                 fullName: user.fullName,
                 username: user.username,
                 role: user.role,

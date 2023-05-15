@@ -38,12 +38,9 @@ const cart = () => {
         }
 
         //create order and put in Order model, delete Cart state
-        const listproducts = products.map((item) => {
-            return { productID: item.product._id, quantity: item.qty }
-        })
         const newOrder = {
             userID: user._id,
-            products: listproducts,
+            products: products,
             totalQty,
             totalPrice,
             address: user.address,

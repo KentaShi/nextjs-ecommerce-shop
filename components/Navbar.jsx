@@ -132,7 +132,7 @@ const Navbar = () => {
                     <Link href={`/`}>
                         <div className={"flex items-center" + isActive("/")}>
                             <p className='ml-2 text-lg 2xl:text-xl text-coca-darkest font-bold'>
-                                AnhAnh's Coffee
+                                AnhAnh Nè
                             </p>
                         </div>
                     </Link>

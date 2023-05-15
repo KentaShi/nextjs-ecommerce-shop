@@ -38,16 +38,7 @@ const createOrder = async (req, res) => {
 
 const getOrders = async (req, res) => {
     try {
-        //const user = await auth(req, res)
-        // const userID = user._id
-        // let orders
-        // if (userID) {
-        //     orders = await Order.find({ userID: userID })
-        // } else {
-        //     orders = await Order.find()
-        // }
         let orders = await Order.find()
-        console.log(orders)
         return res
             .status(200)
             .json({ status: "success", result: orders.length, orders })
