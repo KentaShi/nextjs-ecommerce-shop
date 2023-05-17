@@ -2,11 +2,21 @@ import Image from "next/image"
 import Product from "@/components/Product"
 import connectDB from "@/utils/connectDB"
 import { getData } from "@/utils/fetchData"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import Head from "next/head"
+import { DataContext } from "@/store/globalState"
+import { useRouter } from "next/router"
 
 export default function Home(props) {
     const [products, setProducts] = useState(props.products)
+    const [state, dispatch] = useContext(DataContext)
+    const {
+        auth: { user },
+    } = state
+    const router = useRouter()
+    if (user?.role === "admin") {
+        router.push("/admin")
+    }
     return (
         <>
             <Head>

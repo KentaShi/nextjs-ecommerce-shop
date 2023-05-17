@@ -9,11 +9,10 @@ const admin = () => {
     } = state
     const router = useRouter()
 
-    useEffect(() => {
-        if (!user) {
-            router.push("/login")
-        }
-    }, [user])
+    if (user?.role === "user") {
+        router.push("/")
+    }
+
     return <div>admin</div>
 }
 

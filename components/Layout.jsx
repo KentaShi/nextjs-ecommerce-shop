@@ -5,6 +5,7 @@ import Footer from "./Footer"
 import Notify from "./Notify"
 
 import { DataContext } from "@/store/globalState"
+import Sidebar from "./admin/Sidebar"
 
 const Layout = ({ children }) => {
     const [state, dispatch] = useContext(DataContext)
@@ -25,9 +26,11 @@ const Layout = ({ children }) => {
 
     const AdminLayout = ({ children }) => {
         return (
-            <div>
+            <div className=''>
                 <NavbarAdmin />
-                <div>you are admin</div>
+                <Sidebar />
+                <Notify />
+                <div>{children}</div>
             </div>
         )
     }
