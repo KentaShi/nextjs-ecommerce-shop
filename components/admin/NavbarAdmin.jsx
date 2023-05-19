@@ -24,14 +24,14 @@ const NavbarAdmin = () => {
                     <Link href={`/`}>
                         <div className='flex items-center'>
                             <p className='ml-2 text-lg 2xl:text-xl text-coca-darkest font-bold'>
-                                AnhAnh Nè (Admin)
+                                AnhAnh Nè
                             </p>
                         </div>
                     </Link>
                 </div>
 
                 <div className='flex flex-row justify-end items-center'>
-                    <div className='ml-2'>
+                    <div className='ml-2 cursor-pointer'>
                         <p onClick={handleLogout}>Log Out</p>
                     </div>
                 </div>

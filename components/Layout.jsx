@@ -26,11 +26,13 @@ const Layout = ({ children }) => {
 
     const AdminLayout = ({ children }) => {
         return (
-            <div className=''>
+            <div className='min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased'>
                 <NavbarAdmin />
                 <Sidebar />
+                <div className='mt-14 ml-14 md:ml-64 h-full min-h-screen mb-10 p-4'>
+                    {children}
+                </div>
                 <Notify />
-                <div>{children}</div>
             </div>
         )
     }

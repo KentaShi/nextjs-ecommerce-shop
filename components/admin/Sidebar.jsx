@@ -18,8 +18,10 @@ import {
     Cog6ToothIcon,
     InboxIcon,
     PowerIcon,
+    UsersIcon,
 } from "@heroicons/react/24/solid"
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
+import Link from "next/link"
 
 const Sidebar = () => {
     const [open, setOpen] = React.useState(0)
@@ -29,11 +31,13 @@ const Sidebar = () => {
     }
 
     return (
-        <Card className='fixed top-4 left-4 h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5'>
+        <Card className='fixed top-14 left-0 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5     '>
             <div className='mb-2 p-4'>
-                <Typography variant='h5' color='blue-gray'>
-                    Sidebar
-                </Typography>
+                <Link href={"/admin"}>
+                    <Typography variant='h5' color='blue-gray'>
+                        Admin
+                    </Typography>
+                </Link>
             </div>
             <List>
                 <Accordion
@@ -124,24 +128,28 @@ const Sidebar = () => {
                     </ListItem>
                     <AccordionBody className='py-1'>
                         <List className='p-0'>
-                            <ListItem>
-                                <ListItemPrefix>
-                                    <ChevronRightIcon
-                                        strokeWidth={3}
-                                        className='h-3 w-5'
-                                    />
-                                </ListItemPrefix>
-                                Orders
-                            </ListItem>
-                            <ListItem>
-                                <ListItemPrefix>
-                                    <ChevronRightIcon
-                                        strokeWidth={3}
-                                        className='h-3 w-5'
-                                    />
-                                </ListItemPrefix>
-                                Products
-                            </ListItem>
+                            <Link href={"/admin/orders"}>
+                                <ListItem>
+                                    <ListItemPrefix>
+                                        <ChevronRightIcon
+                                            strokeWidth={3}
+                                            className='h-3 w-5'
+                                        />
+                                    </ListItemPrefix>
+                                    Orders
+                                </ListItem>
+                            </Link>
+                            <Link href={"/admin/products"}>
+                                <ListItem>
+                                    <ListItemPrefix>
+                                        <ChevronRightIcon
+                                            strokeWidth={3}
+                                            className='h-3 w-5'
+                                        />
+                                    </ListItemPrefix>
+                                    Products
+                                </ListItem>
+                            </Link>
                         </List>
                     </AccordionBody>
                 </Accordion>
@@ -175,9 +183,9 @@ const Sidebar = () => {
                 </ListItem>
                 <ListItem>
                     <ListItemPrefix>
-                        <PowerIcon className='h-5 w-5' />
+                        <UsersIcon className='h-5 w-5' />
                     </ListItemPrefix>
-                    Log Out
+                    Users
                 </ListItem>
             </List>
         </Card>
