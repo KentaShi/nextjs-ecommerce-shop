@@ -1,19 +1,10 @@
 import React, { useContext, useEffect } from "react"
 import { DataContext } from "@/store/globalState"
 import { useRouter } from "next/router"
+import admin from "@/middleware/admin"
 
-const admin = () => {
-    const [state, dispatch] = useContext(DataContext)
-    const {
-        auth: { user },
-    } = state
-    const router = useRouter()
-
-    if (user?.role === "user") {
-        router.push("/")
-    }
-
+const AdminPage = () => {
     return <div>admin</div>
 }
 
-export default admin
+export default admin(AdminPage)

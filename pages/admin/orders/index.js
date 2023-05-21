@@ -1,7 +1,7 @@
 import OrderIItem from "@/components/OrderIItem"
 import { getData } from "@/utils/fetchData"
 import Head from "next/head"
-import React from "react"
+import React, { useContext, useEffect } from "react"
 import { PencilIcon } from "@heroicons/react/24/solid"
 import {
     ArrowDownTrayIcon,
@@ -21,10 +21,23 @@ import {
     Input,
 } from "@material-tailwind/react"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { DataContext } from "@/store/globalState"
+import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 
 const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action"]
 
 const orders = ({ orders }) => {
+    const [state, dispatch] = useContext(DataContext)
+    const {
+        auth: { user },
+    } = state
+    const router = useRouter()
+    useEffect(() => {
+        if (!checkIfUserIsAdmin(user)) {
+            router.push("/")
+        }
+    }, [])
     return (
         <div>
             <Head>
