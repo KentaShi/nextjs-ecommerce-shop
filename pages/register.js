@@ -19,12 +19,13 @@ import { useRouter } from "next/router"
 const register = () => {
     const initState = {
         fullName: "",
-        username: "",
+        phone: "",
+        address: "",
         password: "",
         confirmPassword: "",
     }
     const [userData, setUserData] = useState(initState)
-    const { fullName, username, password, confirmPassword } = userData
+    const { fullName, phone, address, password, confirmPassword } = userData
 
     const [state, dispatch] = useContext(DataContext)
     const { auth } = state
@@ -38,7 +39,13 @@ const register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const errMsg = valid(fullName, username, password, confirmPassword)
+        const errMsg = valid(
+            fullName,
+            phone,
+            address,
+            password,
+            confirmPassword
+        )
         if (errMsg) {
             return dispatch({ type: "NOTIFY", payload: { error: errMsg } })
         }
@@ -55,17 +62,17 @@ const register = () => {
     }
 
     useEffect(() => {
-        if (Object.keys(auth).length !== 0) router.push("/")
+        if (Object.keys(auth).length !== 0) router.back()
     }, [auth])
 
     return (
-        <div className='flex flex-1 justify-center h-[480px]'>
+        <div className='flex flex-1 justify-center h-[auto]'>
             <Head>
                 <title>Đăng Ký Thành Viên | AnhAnh Nè</title>
             </Head>
             <Card className='w-96 p-8'>
                 <p className='text-coca-darkest font-extrabold text-3xl'>
-                    Đăng Ký
+                    Đăng Ký Thông Tin Giao Hàng
                 </p>
                 <form
                     onSubmit={handleSubmit}
@@ -73,7 +80,7 @@ const register = () => {
                 >
                     <Input
                         color='brown'
-                        label='Full Name'
+                        label='Họ Tên'
                         size='lg'
                         name='fullName'
                         value={fullName}
@@ -81,15 +88,23 @@ const register = () => {
                     />
                     <Input
                         color='brown'
-                        label='Username'
+                        label='Số Điện Thoại'
                         size='lg'
-                        name='username'
-                        value={username}
+                        name='phone'
+                        value={phone}
                         onChange={handleChangeInput}
                     />
                     <Input
                         color='brown'
-                        label='Password'
+                        label='Địa Chỉ'
+                        size='lg'
+                        name='address'
+                        value={address}
+                        onChange={handleChangeInput}
+                    />
+                    <Input
+                        color='brown'
+                        label='Mật Khẩu'
                         size='lg'
                         name='password'
                         type='password'
@@ -99,7 +114,7 @@ const register = () => {
                     />
                     <Input
                         color='brown'
-                        label='Confirm Password'
+                        label='Nhập Lại Mật Khẩu'
                         size='lg'
                         name='confirmPassword'
                         type='password'

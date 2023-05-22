@@ -38,6 +38,7 @@ const orders = ({ orders }) => {
             router.push("/")
         }
     }, [])
+
     return (
         <div>
             <Head>
@@ -162,14 +163,21 @@ const orders = ({ orders }) => {
                                                     <Chip
                                                         size='sm'
                                                         variant='ghost'
-                                                        value={status}
+                                                        value={
+                                                            status === "paid"
+                                                                ? "Giao hàng thành công"
+                                                                : status ===
+                                                                  "delivering"
+                                                                ? "Đang giao hàng"
+                                                                : "Đã đặt hàng"
+                                                        }
                                                         color={
                                                             status === "paid"
                                                                 ? "green"
                                                                 : status ===
-                                                                  "pending"
-                                                                ? "amber"
-                                                                : "red"
+                                                                  "delivering"
+                                                                ? "blue"
+                                                                : "amber"
                                                         }
                                                     />
                                                 </div>

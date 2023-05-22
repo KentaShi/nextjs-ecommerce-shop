@@ -18,11 +18,11 @@ import { useRouter } from "next/router"
 
 const login = () => {
     const initState = {
-        username: "",
+        phone: "",
         password: "",
     }
     const [userData, setUserData] = useState(initState)
-    const { username, password } = userData
+    const { phone, password } = userData
 
     const [state, dispatch] = useContext(DataContext)
     const { auth } = state
@@ -78,15 +78,15 @@ const login = () => {
                 >
                     <Input
                         color='brown'
-                        label='Username'
+                        label='Số Điện Thoại'
                         size='lg'
-                        name='username'
-                        value={username}
+                        name='phone'
+                        value={phone}
                         onChange={handleChangeInput}
                     />
                     <Input
                         color='brown'
-                        label='Password'
+                        label='Mật Khẩu'
                         size='lg'
                         type='password'
                         name='password'

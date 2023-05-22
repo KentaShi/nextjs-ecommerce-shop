@@ -13,29 +13,36 @@ export default async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        const { fullName, username, password, confirmPassword } = req.body
+        const { fullName, phone, address, password, confirmPassword } = req.body
 
-        const errMsg = valid(fullName, username, password, confirmPassword)
+        const errMsg = valid(
+            fullName,
+            phone,
+            address,
+            password,
+            confirmPassword
+        )
         if (errMsg) {
             return res.status(400).json({ err: errMsg })
         }
 
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ phone })
         if (user) {
             return res
                 .status(400)
-                .json({ err: "This username has already exists!" })
+                .json({ err: "Số điện thoại này đã được đăng ký!" })
         }
 
         const passwordHash = await bcrypt.hash(password, 12)
         const newUser = new User({
             fullName,
-            username,
+            phone,
+            address,
             password: passwordHash,
         })
 
         await newUser.save()
-        return res.status(200).json({ msg: "Register Successfully!" })
+        return res.status(200).json({ msg: "Đăng Ký Thành Công!" })
     } catch (error) {
         return res.status(500).json({ err: error })
     }

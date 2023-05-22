@@ -17,30 +17,29 @@ export default async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body
+        const { phone, password } = req.body
 
-        const user = await User.findOne({ username })
+        const user = await User.findOne({ phone })
         if (!user) {
-            return res.status(400).json({ err: "This user does not exist!" })
+            return res.status(400).json({ err: "Tài Khoản Không Tồn Tại!" })
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password)
 
         if (!isPasswordMatch) {
-            return res.status(400).json({ err: "Incorrect Password" })
+            return res.status(400).json({ err: "Mật Khẩu Không Đúng!" })
         }
 
         const access_token = createAccessToken({ id: user._id })
         const refresh_token = createRefreshToken({ id: user._id })
 
         return res.status(200).json({
-            msg: "Sign In Successfully!",
+            msg: "Đăng Nhập Thành Công!",
             refresh_token,
             access_token,
             user: {
                 _id: user._id,
                 fullName: user.fullName,
-                username: user.username,
                 role: user.role,
                 root: user.root,
                 avatar: user.avatar,

@@ -24,9 +24,9 @@ const cart = () => {
         if (!user) {
             dispatch({
                 type: "NOTIFY",
-                payload: { error: "Vui lòng đăng nhập!" },
+                payload: { error: "Vui lòng đăng ký thông tin giao hàng!" },
             })
-            return router.push("/login")
+            return router.push("/register")
         }
 
         if (!user?.address || !user?.phone) {

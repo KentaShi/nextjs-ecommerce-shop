@@ -35,7 +35,6 @@ export default async (req, res) => {
             user: {
                 _id: user._id,
                 fullName: user.fullName,
-                username: user.username,
                 role: user.role,
                 root: user.root,
                 avatar: user.avatar,

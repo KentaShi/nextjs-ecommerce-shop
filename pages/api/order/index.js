@@ -28,7 +28,7 @@ const createOrder = async (req, res) => {
         await newOrder.save()
 
         return res.status(200).json({
-            msg: "Order created successfully",
+            msg: "Đặt Hàng Thành Công!",
             order: newOrder,
         })
     } catch (error) {

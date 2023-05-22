@@ -1,11 +1,11 @@
-const valid = (fullName, username, password, confirmPassword) => {
-    if (!fullName || !username || !password) {
-        return "Please enter all fields.";
+const valid = (fullName, phone, address, password, confirmPassword) => {
+    if (!fullName || !phone || !address || !password) {
+        return "Please enter all fields."
     }
 
     if (password !== confirmPassword) {
-        return "Confirm Password did not match.";
+        return "Confirm Password did not match."
     }
-};
+}
 
-export default valid;
+export default valid
