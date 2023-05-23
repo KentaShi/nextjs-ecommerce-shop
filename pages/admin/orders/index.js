@@ -24,8 +24,9 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
+import OrderItem from "@/components/admin/OrderItem"
 
-const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action"]
+const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action", ""]
 
 const orders = ({ orders }) => {
     const [state, dispatch] = useContext(DataContext)
@@ -110,7 +111,7 @@ const orders = ({ orders }) => {
                                 (
                                     {
                                         _id,
-                                        userID,
+                                        phone,
                                         totalPrice,
                                         status,
                                         createdAt,
@@ -123,80 +124,14 @@ const orders = ({ orders }) => {
                                         : "p-4 border-b border-blue-gray-50"
 
                                     return (
-                                        <tr key={userID}>
-                                            <td className={classes}>
-                                                <div className='flex items-center gap-3'>
-                                                    <Typography
-                                                        variant='small'
-                                                        color='blue-gray'
-                                                        className='font-bold'
-                                                    >
-                                                        {userID}
-                                                    </Typography>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Typography
-                                                    variant='small'
-                                                    color='blue-gray'
-                                                    className='font-normal'
-                                                >
-                                                    {totalPrice.toLocaleString(
-                                                        "de-DE"
-                                                    )}
-                                                    đ
-                                                </Typography>
-                                            </td>
-                                            <td className={classes}>
-                                                <Typography
-                                                    variant='small'
-                                                    color='blue-gray'
-                                                    className='font-normal'
-                                                >
-                                                    {new Date(
-                                                        createdAt
-                                                    ).toLocaleString("id-ID")}
-                                                </Typography>
-                                            </td>
-                                            <td className={classes}>
-                                                <div className='w-max'>
-                                                    <Chip
-                                                        size='sm'
-                                                        variant='ghost'
-                                                        value={
-                                                            status === "paid"
-                                                                ? "Giao hàng thành công"
-                                                                : status ===
-                                                                  "delivering"
-                                                                ? "Đang giao hàng"
-                                                                : "Đã đặt hàng"
-                                                        }
-                                                        color={
-                                                            status === "paid"
-                                                                ? "green"
-                                                                : status ===
-                                                                  "delivering"
-                                                                ? "blue"
-                                                                : "amber"
-                                                        }
-                                                    />
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Link
-                                                    href={`/admin/orders/${_id}`}
-                                                >
-                                                    <Tooltip content='Edit'>
-                                                        <IconButton
-                                                            variant='text'
-                                                            color='blue-gray'
-                                                        >
-                                                            <PencilIcon className='h-4 w-4' />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </Link>
-                                            </td>
-                                        </tr>
+                                        <OrderItem
+                                            classes={classes}
+                                            _id={_id}
+                                            phone={phone}
+                                            totalPrice={totalPrice}
+                                            _status={status}
+                                            createdAt={createdAt}
+                                        />
                                     )
                                 }
                             )}
