@@ -67,7 +67,7 @@ const Sidebar = () => {
                             </Typography>
                         </AccordionHeader>
                     </ListItem>
-                    <AccordionBody className='py-1'>
+                    {/* <AccordionBody className='py-1'>
                         <List className='p-0'>
                             <ListItem>
                                 <ListItemPrefix>
@@ -97,7 +97,7 @@ const Sidebar = () => {
                                 Projects
                             </ListItem>
                         </List>
-                    </AccordionBody>
+                    </AccordionBody> */}
                 </Accordion>
                 <Accordion
                     open={open === 2}

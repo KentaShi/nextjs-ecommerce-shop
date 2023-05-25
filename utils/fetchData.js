@@ -40,3 +40,18 @@ export const updateData = async (url, post, token) => {
         return error.response.data
     }
 }
+
+export const deleteData = async (url, token) => {
+    try {
+        const res = await axios.delete(`${BASE_URL}/api/${url}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+            },
+        })
+
+        return res.data
+    } catch (error) {
+        return error.response.data
+    }
+}

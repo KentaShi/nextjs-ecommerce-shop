@@ -1,10 +1,11 @@
 import AccessDenied from "@/components/accessDenied"
+
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import { getData } from "@/utils/fetchData"
 import React, { useContext } from "react"
 
-const OrderDetail = ({ order }) => {
+const ProductDetail = ({ product }) => {
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { user, token },
@@ -14,16 +15,16 @@ const OrderDetail = ({ order }) => {
         return <AccessDenied />
     }
 
-    return <div>OrderDetail: {order._id}</div>
+    return <div>productDetail: {product._id}</div>
 }
 
 export async function getStaticPaths() {
     // Call an external API endpoint to get posts
-    const res = await getData("order")
+    const res = await getData("product")
 
     // Get the paths we want to pre-render based on posts
-    const paths = res.orders.map((order) => ({
-        params: { id: order._id },
+    const paths = res.products.map((product) => ({
+        params: { id: product._id },
     }))
 
     // We'll pre-render only these paths at build time.
@@ -32,8 +33,8 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params: { id } }) {
-    const res = await getData(`order/${id}`)
-    return { props: { order: res.order } }
+    const res = await getData(`product/${id}`)
+    return { props: { product: res.product } }
 }
 
-export default OrderDetail
+export default ProductDetail

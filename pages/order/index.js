@@ -1,4 +1,4 @@
-import OrderIItem from "@/components/OrderIItem"
+import Order from "@/components/Order"
 import { DataContext } from "@/store/globalState"
 import { getData } from "@/utils/fetchData"
 import Head from "next/head"
@@ -24,7 +24,7 @@ const Orders = ({ orders }) => {
             ) : (
                 <div className='flex flex-col items-center'>
                     {filterOrderByUser.map((item, index) => (
-                        <OrderIItem key={index} order={item} />
+                        <Order key={index} order={item} />
                     ))}
                 </div>
             )}

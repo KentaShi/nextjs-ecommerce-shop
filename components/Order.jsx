@@ -1,7 +1,7 @@
 import Link from "next/link"
 import React from "react"
 
-const OrderIItem = ({ order }) => {
+const Order = ({ order }) => {
     return (
         <div className='rounded-lg flex flex-col shadow-lg shadow-coca-lightest mt-6 p-6 w-[32rem]'>
             <Link href={`/order/${order?._id}`} className='flex flex-col'>
@@ -54,10 +54,17 @@ const OrderIItem = ({ order }) => {
 
                 <hr className='my-4' />
 
-                <p>Trạng Thái: {order.status === "pending" && "Đã đặt hàng"}</p>
+                <p>
+                    Trạng Thái:{" "}
+                    {order.status === "pending"
+                        ? "Đã đặt hàng"
+                        : order.status === "delivering"
+                        ? "Đang giao hàng"
+                        : "Giao hàng thành công"}
+                </p>
             </Link>
         </div>
     )
 }
 
-export default OrderIItem
+export default Order

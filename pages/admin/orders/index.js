@@ -1,7 +1,7 @@
-import OrderIItem from "@/components/OrderIItem"
-import { getData } from "@/utils/fetchData"
+import OrderIItem from "@/components/Order"
+import { getData, updateData } from "@/utils/fetchData"
 import Head from "next/head"
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { PencilIcon } from "@heroicons/react/24/solid"
 import {
     ArrowDownTrayIcon,
@@ -25,20 +25,19 @@ import { useRouter } from "next/router"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import OrderItem from "@/components/admin/OrderItem"
+import AccessDenied from "@/components/AccessDenied"
 
-const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action", ""]
+const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action"]
 
 const orders = ({ orders }) => {
     const [state, dispatch] = useContext(DataContext)
     const {
-        auth: { user },
+        auth: { user, token },
     } = state
-    const router = useRouter()
-    useEffect(() => {
-        if (!checkIfUserIsAdmin(user)) {
-            router.push("/")
-        }
-    }, [])
+
+    if (!checkIfUserIsAdmin(user)) {
+        return <AccessDenied />
+    }
 
     return (
         <div>
@@ -90,10 +89,11 @@ const orders = ({ orders }) => {
                     <table className='w-full min-w-max table-auto text-left'>
                         <thead>
                             <tr>
-                                {TABLE_HEAD.map((head) => (
+                                {TABLE_HEAD.map((head, index) => (
                                     <th
-                                        key={head}
-                                        className='border-y border-blue-gray-100 bg-blue-gray-50/50 p-4'
+                                        colSpan={head === "Action" ? 4 : 1}
+                                        key={index}
+                                        className='border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 '
                                     >
                                         <Typography
                                             variant='small'
@@ -107,34 +107,20 @@ const orders = ({ orders }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map(
-                                (
-                                    {
-                                        _id,
-                                        phone,
-                                        totalPrice,
-                                        status,
-                                        createdAt,
-                                    },
-                                    index
-                                ) => {
-                                    const isLast = index === orders.length - 1
-                                    const classes = isLast
-                                        ? "p-4"
-                                        : "p-4 border-b border-blue-gray-50"
+                            {orders.map((order, index) => {
+                                const isLast = index === orders.length - 1
+                                const classes = isLast
+                                    ? "p-4"
+                                    : "p-4 border-b border-blue-gray-50"
 
-                                    return (
-                                        <OrderItem
-                                            classes={classes}
-                                            _id={_id}
-                                            phone={phone}
-                                            totalPrice={totalPrice}
-                                            _status={status}
-                                            createdAt={createdAt}
-                                        />
-                                    )
-                                }
-                            )}
+                                return (
+                                    <OrderItem
+                                        key={index}
+                                        classes={classes}
+                                        order={order}
+                                    />
+                                )
+                            })}
                         </tbody>
                     </table>
                 </CardBody>

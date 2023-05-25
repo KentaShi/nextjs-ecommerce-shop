@@ -1,6 +1,10 @@
 import { DataContext } from "@/store/globalState"
-import { updateData } from "@/utils/fetchData"
-import { PencilIcon } from "@heroicons/react/24/solid"
+import { deleteData, updateData } from "@/utils/fetchData"
+import {
+    PencilIcon,
+    TrashIcon,
+    DocumentTextIcon,
+} from "@heroicons/react/24/solid"
 import {
     Button,
     Chip,
@@ -9,40 +13,81 @@ import {
     Typography,
 } from "@material-tailwind/react"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import React, { useContext, useEffect, useState } from "react"
 
-const OrderItem = ({ classes, _id, phone, totalPrice, _status, createdAt }) => {
+const OrderItem = ({ classes, order }) => {
     const [isConfirmed, setIsConfirmed] = useState(false)
-    const [status, setStatus] = useState(_status)
+    const [isPaid, setIsPaid] = useState(false)
+
+    const { _id, phone, status, totalPrice, createdAt } = order
 
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { token },
     } = state
 
-    const data = { status: "delivering" }
+    const data = ["delivering", "paid"]
+
+    const router = useRouter()
 
     const handleConfirm = (e) => {
         e.preventDefault()
 
-        updateData(`order/${_id}`, data, token).then((res) => {
+        updateData(`order/${_id}`, { status: data[0] }, token).then((res) => {
             if (res.err)
                 return dispatch({
                     type: "NOTIFY",
                     payload: { error: res.err },
                 })
-            setStatus(res.order.status)
+            //console.log(res)
             return dispatch({
                 type: "NOTIFY",
                 payload: { success: res.msg },
             })
         })
         setIsConfirmed(true)
+        router.reload()
+    }
+
+    const handleDelete = () => {
+        deleteData(`order/${_id}`, token).then((res) => {
+            if (res.err)
+                return dispatch({
+                    type: "NOTIFY",
+                    payload: { error: res.err },
+                })
+            return dispatch({
+                type: "NOTIFY",
+                payload: { success: res.msg },
+            })
+        })
+        router.reload()
+    }
+
+    const handlePaid = () => {
+        updateData(`order/${_id}`, { status: data[1] }, token).then((res) => {
+            if (res.err)
+                return dispatch({
+                    type: "NOTIFY",
+                    payload: { error: res.err },
+                })
+            //console.log(res)
+            return dispatch({
+                type: "NOTIFY",
+                payload: { success: res.msg },
+            })
+        })
+        setIsPaid(true)
+        router.reload()
     }
 
     useEffect(() => {
         if (status !== "pending") {
             setIsConfirmed(true)
+            if (status === "paid") {
+                setIsPaid(true)
+            }
         }
     }, [status])
     return (
@@ -98,15 +143,7 @@ const OrderItem = ({ classes, _id, phone, totalPrice, _status, createdAt }) => {
                     />
                 </div>
             </td>
-            <td className={classes}>
-                <Link href={`/admin/orders/${_id}`}>
-                    <Tooltip content='Chi Tiết'>
-                        <IconButton variant='text' color='blue-gray'>
-                            <PencilIcon className='h-4 w-4' />
-                        </IconButton>
-                    </Tooltip>
-                </Link>
-            </td>
+
             <td className={classes}>
                 <Button
                     onClick={handleConfirm}
@@ -116,6 +153,36 @@ const OrderItem = ({ classes, _id, phone, totalPrice, _status, createdAt }) => {
                 >
                     Xác Nhận
                 </Button>
+            </td>
+            <td className={`${classes} ${isConfirmed ? "" : "hidden"}`}>
+                <Button
+                    onClick={handlePaid}
+                    color='green'
+                    type='button'
+                    disabled={isPaid}
+                >
+                    Đã thanh toán
+                </Button>
+            </td>
+            <td className={classes}>
+                <Link href={`/admin/orders/${_id}`}>
+                    <Tooltip content='Chi Tiết'>
+                        <IconButton variant='text' color='blue-gray'>
+                            <DocumentTextIcon className='h-4 w-4' />
+                        </IconButton>
+                    </Tooltip>
+                </Link>
+            </td>
+            <td className={classes}>
+                <Tooltip content='Xóa'>
+                    <IconButton
+                        variant='text'
+                        color='blue-gray'
+                        onClick={handleDelete}
+                    >
+                        <TrashIcon className='h-4 w-4' />
+                    </IconButton>
+                </Tooltip>
             </td>
         </tr>
     )
