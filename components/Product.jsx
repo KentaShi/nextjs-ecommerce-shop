@@ -47,7 +47,7 @@ const Product = ({ product }) => {
         })
     }
     return (
-        <div className='w-52'>
+        <div className='w-80 md:w-52'>
             <Card className=''>
                 <Link href={`/product/${_id}`}>
                     <img

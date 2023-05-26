@@ -79,7 +79,7 @@ const cart = () => {
                     <p className='text-lg font-bold'>Cart is empty</p>
                 </div>
             ) : (
-                <div className='flex flex-row w-3/4'>
+                <div className='flex flex-col lg:flex-row w-3/4'>
                     <div className='flex flex-col flex-1'>
                         {products.map((item, index) => (
                             <CartItem
@@ -89,7 +89,7 @@ const cart = () => {
                             />
                         ))}
                     </div>
-                    <div className='flex-[0.5] mt-6 rounded-lg p-6 bg-coca-lightest-95 ml-6 h-[150px]'>
+                    <div className='flex-[0.5] mt-6 rounded-lg p-6 bg-coca-lightest-95 lg:ml-6 h-[150px]'>
                         <div className='flex justify-between'>
                             <p className='text-lg font-bold'>Tổng cộng:</p>
                             <div className=''>

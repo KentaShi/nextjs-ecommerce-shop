@@ -24,12 +24,11 @@ export default function Home(props) {
             </Head>
 
             <div className='flex flex-col justify-center items-center'>
-                <div>
-                    <p className='text-lg font-semibold text-coca-darkest mb-4'>
-                        Thức Uống
-                    </p>
-                </div>
-                <div className='grid grid-cols-4 gap-4 justify-items-center content-start max-w-[880px]'>
+                <p className='text-lg font-semibold text-coca-darkest p-2 mb-4'>
+                    Thức Uống
+                </p>
+
+                <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center content-start max-w-[880px]'>
                     {products.length === 0 ? (
                         <h2>No Products</h2>
                     ) : (

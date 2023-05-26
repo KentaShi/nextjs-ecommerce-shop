@@ -1,8 +1,8 @@
-import AccessDenied from "@/components/accessDenied"
-
+import DeniedAccess from "@/components/DeniedAccess"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import { getData } from "@/utils/fetchData"
+import Head from "next/head"
 import React, { useContext } from "react"
 
 const ProductDetail = ({ product }) => {
@@ -12,10 +12,17 @@ const ProductDetail = ({ product }) => {
     } = state
 
     if (!checkIfUserIsAdmin(user)) {
-        return <AccessDenied />
+        return <DeniedAccess />
     }
 
-    return <div>productDetail: {product._id}</div>
+    return (
+        <>
+            <Head>
+                <title>{product.name}</title>
+            </Head>
+            <div>productDetail: {product._id}</div>
+        </>
+    )
 }
 
 export async function getStaticPaths() {

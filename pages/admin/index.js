@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from "react"
 import { DataContext } from "@/store/globalState"
 import { useRouter } from "next/router"
-import AccessDenied from "@/components/accessDenied"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
+import DeniedAccess from "@/components/DeniedAccess"
 
 const AdminPage = () => {
     const [state, dispatch] = useContext(DataContext)
@@ -11,7 +11,7 @@ const AdminPage = () => {
     } = state
 
     if (!checkIfUserIsAdmin(user)) {
-        return <AccessDenied />
+        return <DeniedAccess />
     }
     return <div>admin</div>
 }

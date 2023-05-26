@@ -1,4 +1,4 @@
-import AccessDenied from "@/components/accessDenied"
+import DeniedAccess from "@/components/DeniedAccess"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import { getData } from "@/utils/fetchData"
@@ -11,7 +11,7 @@ const OrderDetail = ({ order }) => {
     } = state
 
     if (!checkIfUserIsAdmin(user)) {
-        return <AccessDenied />
+        return <DeniedAccess />
     }
 
     return <div>OrderDetail: {order._id}</div>

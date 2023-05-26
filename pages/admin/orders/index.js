@@ -25,7 +25,7 @@ import { useRouter } from "next/router"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import OrderItem from "@/components/admin/OrderItem"
-import AccessDenied from "@/components/AccessDenied"
+import DeniedAccess from "@/components/DeniedAccess"
 
 const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action"]
 
@@ -36,7 +36,7 @@ const orders = ({ orders }) => {
     } = state
 
     if (!checkIfUserIsAdmin(user)) {
-        return <AccessDenied />
+        return <DeniedAccess />
     }
 
     return (

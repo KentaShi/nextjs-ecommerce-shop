@@ -79,7 +79,13 @@ const Navbar = () => {
                             className='border border-blue-500 p-0.5'
                             src={avatar}
                         />
-                        {fullName}
+                        <Typography
+                            as='span'
+                            variant='small'
+                            className='font-bold hidden md:inline-flex'
+                        >
+                            {fullName}
+                        </Typography>
                         <ChevronDownIcon
                             strokeWidth={2.5}
                             className={`h-3 w-3 transition-transform ${
@@ -131,7 +137,7 @@ const Navbar = () => {
                 <div className='flex'>
                     <Link href={`/`}>
                         <div className={"flex items-center" + isActive("/")}>
-                            <p className='ml-2 text-lg 2xl:text-xl text-coca-darkest font-bold'>
+                            <p className='ml-2 text-3xl xl:text-2xl text-coca-darkest font-bold'>
                                 AnhAnh Nè
                             </p>
                         </div>
@@ -167,7 +173,7 @@ const Navbar = () => {
                         </Link>
                     </div>
                     {Object.keys(auth).length === 0 ? (
-                        <div className='ml-2'>
+                        <div className='ml-6'>
                             <Link href={`/login`}>
                                 <div
                                     className={
@@ -181,7 +187,7 @@ const Navbar = () => {
                             </Link>
                         </div>
                     ) : (
-                        <div className='ml-2'>
+                        <div className='ml-6'>
                             <ProfileMenu
                                 fullName={auth?.user?.fullName}
                                 avatar={auth?.user?.avatar}

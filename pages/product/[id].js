@@ -64,11 +64,11 @@ const ProductDetail = ({ product }) => {
         })
     }
     return (
-        <div className='max-w-7xl w-2/3 mx-auto px-4 mt-6'>
+        <div className='max-w-7xl xl:w-2/3 mx-auto px-4 mt-6'>
             <Head>
                 <title>{name}</title>
             </Head>
-            <div className='flex flex-row shadow-lg rounded-lg p-3'>
+            <div className='flex flex-col xl:flex-row shadow-lg rounded-lg p-3'>
                 <div className='flex-1 px-4'>
                     <div>
                         <img
@@ -77,7 +77,7 @@ const ProductDetail = ({ product }) => {
                             src={images[indexImg].url}
                             alt=''
                         />
-                        <div className='flex flex-row'>
+                        <div className='hidden xl:flex xl:flex-row'>
                             {images.map((image, index) => (
                                 <img
                                     onClick={() => setIndexImg(index)}
@@ -133,7 +133,7 @@ const ProductDetail = ({ product }) => {
                     </div>
                     <button
                         onClick={addToCart}
-                        className='h-14 px-6 py-2 bg-coca-medium text-coca-lightest-95 hover:bg-coca-medium-dark font-semibold rounded-full'
+                        className='h-14 px-6 py-2 mt-2 bg-coca-medium text-coca-lightest-95 hover:bg-coca-medium-dark font-semibold rounded-full'
                     >
                         Thêm vào giỏ hàng
                     </button>

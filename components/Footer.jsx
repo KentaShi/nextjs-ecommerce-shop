@@ -23,9 +23,9 @@ const Footer = () => {
                 <div className='mx-auto grid w-full grid-cols-1 gap-8 py-12 md:grid-cols-2 lg:grid-cols-4'>
                     {siteMap.map(({ title, content }, key) => (
                         <div key={key}>
-                            <h4 className='font-bold text-lg'>{title}</h4>
+                            <h4 className='font-bold text-2xl'>{title}</h4>
                             <div>
-                                <p>{content}</p>
+                                <p className='text-lg'>{content}</p>
                             </div>
                         </div>
                     ))}
