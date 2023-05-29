@@ -34,7 +34,13 @@ const OrderItem = ({ classes, order }) => {
     const handleConfirm = (e) => {
         e.preventDefault()
 
-        updateData(`order/${_id}`, { status: data[0] }, token).then((res) => {
+        const currentTIme = new Date()
+
+        updateData(
+            `order/${_id}`,
+            { status: { name: data[0], time: currentTIme } },
+            token
+        ).then((res) => {
             if (res.err)
                 return dispatch({
                     type: "NOTIFY",
@@ -66,7 +72,12 @@ const OrderItem = ({ classes, order }) => {
     }
 
     const handlePaid = () => {
-        updateData(`order/${_id}`, { status: data[1] }, token).then((res) => {
+        const currentTIme = new Date()
+        updateData(
+            `order/${_id}`,
+            { status: { name: data[1], time: currentTIme } },
+            token
+        ).then((res) => {
             if (res.err)
                 return dispatch({
                     type: "NOTIFY",
@@ -83,9 +94,9 @@ const OrderItem = ({ classes, order }) => {
     }
 
     useEffect(() => {
-        if (status !== "pending") {
+        if (status[status.length - 1]?.statusName !== "pending") {
             setIsConfirmed(true)
-            if (status === "paid") {
+            if (status[status.length - 1]?.statusName === "paid") {
                 setIsPaid(true)
             }
         }
@@ -127,16 +138,18 @@ const OrderItem = ({ classes, order }) => {
                         size='sm'
                         variant='ghost'
                         value={
-                            status === "paid"
+                            status[status.length - 1]?.statusName === "paid"
                                 ? "Giao hàng thành công"
-                                : status === "delivering"
+                                : status[status.length - 1]?.statusName ===
+                                  "delivering"
                                 ? "Đang giao hàng"
                                 : "Đã đặt hàng"
                         }
                         color={
-                            status === "paid"
+                            status[status.length - 1]?.statusName === "paid"
                                 ? "green"
-                                : status === "delivering"
+                                : status[status.length - 1]?.statusName ===
+                                  "delivering"
                                 ? "blue"
                                 : "amber"
                         }

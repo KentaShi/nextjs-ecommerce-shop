@@ -27,10 +27,12 @@ const getProduct = async (req, res) => {
 const updateStatus = async (req, res) => {
     try {
         const { id } = req.query
-        const { status } = req.body
+        const {
+            status: { name, time },
+        } = req.body
         const updatedOrder = await Order.findOneAndUpdate(
             { _id: id },
-            { $set: { status: status } },
+            { $push: { status: { statusName: name, statusTime: time } } },
             { new: true }
         )
         //console.log("updatedOrder", updatedOrder)

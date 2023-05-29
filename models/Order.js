@@ -26,8 +26,8 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
         status: {
-            type: String,
-            default: "pending",
+            type: Array,
+            default: [{ statusName: "pending", statusTime: new Date() }],
         },
     },
     { timestamps: true }

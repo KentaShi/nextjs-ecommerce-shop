@@ -38,6 +38,8 @@ const cart = () => {
         }
 
         //create order and put in Order model, delete Cart state
+        const currentItime = new Date()
+
         const newOrder = {
             userID: user._id,
             products: products,

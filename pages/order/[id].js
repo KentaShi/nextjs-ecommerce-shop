@@ -17,18 +17,69 @@ import Head from "next/head"
 import { getData } from "@/utils/fetchData"
 
 const DetailOrder = ({ order }) => {
+    const Status = ({ name, time }) => {
+        switch (name) {
+            case "pending":
+                return (
+                    <p>
+                        Đã Đặt Hàng Vào Lúc{" "}
+                        <span className='text-coca-medium-dark'>
+                            {new Date(time).toLocaleString("id-ID")}
+                        </span>
+                    </p>
+                )
+            case "delivering":
+                return (
+                    <p>
+                        Đand Giao Hàng{" "}
+                        <span className='text-coca-medium-dark'>
+                            {new Date(time).toLocaleString("id-ID")}
+                        </span>
+                    </p>
+                )
+            case "paid":
+                return (
+                    <p>
+                        Đã Giao Hàng Vào Lúc{" "}
+                        <span className='text-coca-medium-dark'>
+                            {new Date(time).toLocaleString("id-ID")}
+                        </span>
+                    </p>
+                )
+        }
+    }
+    const displayDetailStatus = (name) => {
+        return name === "paid"
+            ? "Giao hàng thành công"
+            : name === "delivering"
+            ? "Đang giao hàng"
+            : "Đã đặt hàng"
+    }
+    const displayIconStatus = (name) => {
+        return name === "paid" ? (
+            <TimelineIcon className='p-1' color='green'>
+                <CheckCircleIcon className='h-4 w-4' />
+            </TimelineIcon>
+        ) : name === "delivering" ? (
+            <TimelineIcon className='p-1'>
+                <TruckIcon className='h-4 w-4' />
+            </TimelineIcon>
+        ) : (
+            <TimelineIcon className='p-1' color='orange'>
+                <ClipboardIcon className='h-4 w-4' />
+            </TimelineIcon>
+        )
+    }
     return (
         <div className='flex flex-col items-center justify-between'>
             <Head>
                 <title>Theo Dõi Đơn Hàng | AnhAnh Nè</title>
             </Head>
             <div className='rounded-lg shadow-lg p-6 w-[32rem]'>
-                <p>
-                    Đã Đặt Hàng Vào Lúc{" "}
-                    <span className='text-coca-medium-dark'>
-                        {new Date(order.updatedAt).toLocaleString("id-ID")}
-                    </span>
-                </p>
+                <Status
+                    name={order.status[order.status.length - 1].statusName}
+                    time={order.status[order.status.length - 1].statusTime}
+                />
                 <hr className='my-3' />
                 <div>
                     <p className='font-semibold'>Địa Chỉ Nhận Hàng</p>
@@ -38,80 +89,34 @@ const DetailOrder = ({ order }) => {
             </div>
             <div className='flex justify-center w-[32rem] rounded-lg shadow-lg p-6'>
                 <Timeline>
-                    <TimelineItem>
-                        <TimelineConnector />
-                        <TimelineHeader className='h-3'>
-                            <TimelineIcon className='p-1' color='green'>
-                                <CheckCircleIcon className='h-4 w-4' />
-                            </TimelineIcon>
-                            <Typography
-                                variant='h6'
-                                color='blue-gray'
-                                className='leading-none'
-                            >
-                                Đã Giao Hàng
-                            </Typography>
-                        </TimelineHeader>
-                        <TimelineBody className='pb-8'>
-                            <Typography
-                                variant='small'
-                                color='gary'
-                                className='font-normal text-gray-600'
-                            >
-                                16/05/2023
-                            </Typography>
-                        </TimelineBody>
-                    </TimelineItem>
-                    <TimelineItem>
-                        <TimelineConnector />
-                        <TimelineHeader className='h-3'>
-                            <TimelineIcon className='p-1'>
-                                <TruckIcon className='h-4 w-4' />
-                            </TimelineIcon>
-                            <Typography
-                                variant='h6'
-                                color='blue-gray'
-                                className='leading-none'
-                            >
-                                Đang Vận Chuyển
-                            </Typography>
-                        </TimelineHeader>
-                        <TimelineBody className='pb-8'>
-                            <Typography
-                                variant='small'
-                                color='gary'
-                                className='font-normal text-gray-600'
-                            >
-                                16/05/2023
-                            </Typography>
-                        </TimelineBody>
-                    </TimelineItem>
-                    <TimelineItem>
-                        <TimelineConnector />
-                        <TimelineHeader className='h-3'>
-                            <TimelineIcon className='p-1' color='orange'>
-                                <ClipboardIcon className='h-4 w-4' />
-                            </TimelineIcon>
-                            <Typography
-                                variant='h6'
-                                color='blue-gray'
-                                className='leading-none'
-                            >
-                                Đơn Đã Đặt
-                            </Typography>
-                        </TimelineHeader>
-                        <TimelineBody>
-                            <Typography
-                                variant='small'
-                                color='gary'
-                                className='font-normal text-gray-600'
-                            >
-                                {new Date(order.createdAt).toLocaleString(
-                                    "id-ID"
-                                )}
-                            </Typography>
-                        </TimelineBody>
-                    </TimelineItem>
+                    {order.status
+                        .map((item, index) => (
+                            <TimelineItem key={index}>
+                                <TimelineConnector />
+                                <TimelineHeader className='h-3'>
+                                    {displayIconStatus(item.statusName)}
+                                    <Typography
+                                        variant='h6'
+                                        color='blue-gray'
+                                        className='leading-none'
+                                    >
+                                        {displayDetailStatus(item.statusName)}
+                                    </Typography>
+                                </TimelineHeader>
+                                <TimelineBody className='pb-8'>
+                                    <Typography
+                                        variant='small'
+                                        color='gary'
+                                        className='font-normal text-gray-600'
+                                    >
+                                        {new Date(
+                                            item.statusTime
+                                        ).toLocaleString("id-ID")}
+                                    </Typography>
+                                </TimelineBody>
+                            </TimelineItem>
+                        ))
+                        .reverse()}
                 </Timeline>
             </div>
         </div>
