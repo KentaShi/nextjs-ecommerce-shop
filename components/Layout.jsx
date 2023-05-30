@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
         auth: { user },
     } = state
 
-    const UserLayout = ({ children }) => {
+    const UserLayout = () => {
         return (
             <div className='flex flex-col min-h-screen'>
                 <Navbar />
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
         )
     }
 
-    const AdminLayout = ({ children }) => {
+    const AdminLayout = () => {
         return (
             <div className='min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased'>
                 <NavbarAdmin />
@@ -37,13 +37,7 @@ const Layout = ({ children }) => {
         )
     }
     return (
-        <div>
-            {user?.role === "admin" ? (
-                <AdminLayout>{children}</AdminLayout>
-            ) : (
-                <UserLayout>{children}</UserLayout>
-            )}
-        </div>
+        <div>{user?.role === "admin" ? <AdminLayout /> : <UserLayout />}</div>
     )
 }
 
