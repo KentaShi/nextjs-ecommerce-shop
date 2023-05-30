@@ -3,8 +3,10 @@ import React, { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/store/globalState"
 import Router, { useRouter } from "next/router"
 import { getData, updateData } from "@/utils/fetchData"
+import { Breadcrumbs } from "@material-tailwind/react"
+import Link from "next/link"
 
-const profile = () => {
+const Profile = () => {
     const [state, dispatch] = useContext(DataContext)
     const { auth } = state
     const { user, token } = auth
@@ -74,6 +76,16 @@ const profile = () => {
 
     return (
         <>
+            <div className='flex justify-center items-center'>
+                <div className='w-2/4'>
+                    <Breadcrumbs>
+                        <Link className='opacity-60' href={"/"}>
+                            Trang Chủ
+                        </Link>
+                        <span>Thông Tin Cá Nhân</span>
+                    </Breadcrumbs>
+                </div>
+            </div>
             <Head>
                 <title>Profile</title>
             </Head>
@@ -153,4 +165,4 @@ const profile = () => {
     )
 }
 
-export default profile
+export default Profile

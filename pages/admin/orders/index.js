@@ -29,7 +29,7 @@ import DeniedAccess from "@/components/DeniedAccess"
 
 const TABLE_HEAD = ["User", "Amount", "Date", "Status", "Action"]
 
-const orders = ({ orders }) => {
+const Orders = ({ orders }) => {
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { user, token },
@@ -136,4 +136,4 @@ export const getServerSideProps = async () => {
     }
 }
 
-export default orders
+export default Orders

@@ -7,6 +7,7 @@ import {
     TimelineIcon,
     TimelineBody,
     Typography,
+    Breadcrumbs,
 } from "@material-tailwind/react"
 import {
     CheckCircleIcon,
@@ -15,6 +16,7 @@ import {
 } from "@heroicons/react/24/solid"
 import Head from "next/head"
 import { getData } from "@/utils/fetchData"
+import Link from "next/link"
 
 const DetailOrder = ({ order }) => {
     const Status = ({ name, time }) => {
@@ -75,19 +77,32 @@ const DetailOrder = ({ order }) => {
             <Head>
                 <title>Theo Dõi Đơn Hàng | AnhAnh Nè</title>
             </Head>
-            <div className='rounded-lg shadow-lg p-6 w-[32rem]'>
+            <div className='flex justify-start items-center'>
+                <div className='w-2/3'>
+                    <Breadcrumbs>
+                        <Link className='opacity-60' href={"/"}>
+                            Trang Chủ
+                        </Link>
+                        <Link className='opacity-60' href={"/order"}>
+                            Đơn Hàng
+                        </Link>
+                        <span>Chi Tiết</span>
+                    </Breadcrumbs>
+                </div>
+            </div>
+            <div className='rounded-lg shadow-lg p-6 w-[auto] xsm:w-[22rem] sm:w-[32rem] '>
                 <Status
                     name={order.status[order.status.length - 1].statusName}
                     time={order.status[order.status.length - 1].statusTime}
                 />
                 <hr className='my-3' />
                 <div>
-                    <p className='font-semibold'>Địa Chỉ Nhận Hàng</p>
+                    <p className='font-semibold'>Thông Tin Nhận Hàng</p>
                     <p>Sđt: {order.phone}</p>
                     <p>Địa Chỉ: {order.address}</p>
                 </div>
             </div>
-            <div className='flex justify-center w-[32rem] rounded-lg shadow-lg p-6'>
+            <div className='flex justify-center w-[auto] xsm:w-[22rem] sm:w-[32rem] rounded-lg shadow-lg p-6'>
                 <Timeline>
                     {order.status
                         .map((item, index) => (

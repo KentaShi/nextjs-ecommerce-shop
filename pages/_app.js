@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }) {
                 pauseOnHover
                 theme='light'
             />
-            <Toaster />
+            <Toaster position='bottom-center' reverseOrder={true} />
         </DataProvider>
     )
 }

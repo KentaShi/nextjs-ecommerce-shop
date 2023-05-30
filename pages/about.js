@@ -1,5 +1,5 @@
-const about = () => {
-    return <div>About</div>;
-};
+const About = () => {
+    return <div>About</div>
+}
 
-export default about;
+export default About

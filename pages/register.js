@@ -16,7 +16,7 @@ import { DataContext } from "@/store/globalState"
 import { postData } from "@/utils/fetchData"
 import { useRouter } from "next/router"
 
-const register = () => {
+const Register = () => {
     const initState = {
         fullName: "",
         phone: "",
@@ -152,4 +152,4 @@ const register = () => {
     )
 }
 
-export default register
+export default Register

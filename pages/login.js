@@ -16,7 +16,7 @@ import { postData } from "@/utils/fetchData"
 import Cookies from "js-cookie"
 import { useRouter } from "next/router"
 
-const login = () => {
+const Login = () => {
     const initState = {
         phone: "",
         password: "",
@@ -123,4 +123,4 @@ const login = () => {
     )
 }
 
-export default login
+export default Login

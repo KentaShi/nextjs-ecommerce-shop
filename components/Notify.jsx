@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { DataContext } from "@/store/globalState";
-import Toast from "./Toast";
-import Loading from "./Loading";
+import React, { useContext } from "react"
+import { DataContext } from "@/store/globalState"
+import Toast from "./Toast"
+import Loading from "./Loading"
 
 const Notify = () => {
-    const [state, dispatch] = useContext(DataContext);
-    const { notify } = state;
+    const [state, dispatch] = useContext(DataContext)
+    const { notify } = state
     return (
         <>
             {notify.loading && <Loading />}
@@ -13,10 +13,14 @@ const Notify = () => {
                 <Toast msg={{ msg: notify.error, title: "error" }} />
             )}
             {notify.success && (
-                <Toast msg={{ msg: notify.success, title: "success" }} />
+                <Toast
+                    position='bottom-center'
+                    reverseOrder={true}
+                    msg={{ msg: notify.success, title: "success" }}
+                />
             )}
         </>
-    );
-};
+    )
+}
 
-export default Notify;
+export default Notify

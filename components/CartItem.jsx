@@ -93,7 +93,7 @@ const CartItem = ({ product, qty }) => {
                 />
             </div>
             <div className='flex flex-1 flex-col justify-between'>
-                <div className='flex flex-row justify-between'>
+                <div className='flex flex-col sm:flex-row justify-between'>
                     <div>
                         <h2 className='text-lg font-bold text-coca-darkest'>
                             {name}
@@ -103,16 +103,16 @@ const CartItem = ({ product, qty }) => {
                         <button
                             disabled={quantity === 1 ? true : false}
                             onClick={handleDecrease}
-                            className='px-3 border-y-2 border-l-2 border-coca-darkest bg-white hover:bg-gray-200 rounded-bl rounded-tl cursor-pointer'
+                            className='px-3 border-y border-l border-coca-darkest bg-white hover:bg-gray-200 rounded-bl rounded-tl cursor-pointer'
                         >
                             -
                         </button>
-                        <span className='px-3 py-1 border-2 border-coca-darkest bg-white'>
+                        <span className='px-3 py-1 border border-coca-darkest bg-white'>
                             {quantity}
                         </span>
                         <button
                             onClick={handleIncrease}
-                            className='px-3 border-y-2 border-r-2 border-coca-darkest bg-white hover:bg-gray-200 rounded-br rounded-tr cursor-pointer'
+                            className='px-3 border-y border-r border-coca-darkest bg-white hover:bg-gray-200 rounded-br rounded-tr cursor-pointer'
                         >
                             +
                         </button>

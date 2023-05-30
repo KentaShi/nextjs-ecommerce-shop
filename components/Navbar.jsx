@@ -137,7 +137,7 @@ const Navbar = () => {
                 <div className='flex'>
                     <Link href={`/`}>
                         <div className={"flex items-center" + isActive("/")}>
-                            <p className='ml-2 text-3xl xl:text-2xl text-coca-darkest font-bold'>
+                            <p className='ml-2 text-2xl xl:text-xl text-coca-darkest font-bold'>
                                 AnhAnh Nè
                             </p>
                         </div>

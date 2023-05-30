@@ -2,7 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import React from "react"
 
-const thankyou = () => {
+const Thankyou = () => {
     return (
         <>
             <Head>
@@ -29,4 +29,4 @@ const thankyou = () => {
     )
 }
 
-export default thankyou
+export default Thankyou

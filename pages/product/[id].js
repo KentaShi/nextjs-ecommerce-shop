@@ -3,6 +3,8 @@ import { getData } from "@/utils/fetchData"
 import { DataContext } from "@/store/globalState"
 import Head from "next/head"
 import { useRouter } from "next/router"
+import { Breadcrumbs } from "@material-tailwind/react"
+import Link from "next/link"
 
 const ProductDetail = ({ product }) => {
     const { name, description, price, images } = product
@@ -68,6 +70,16 @@ const ProductDetail = ({ product }) => {
             <Head>
                 <title>{name}</title>
             </Head>
+            <div className='flex justify-center items-center'>
+                <div className='w-2/4'>
+                    <Breadcrumbs>
+                        <Link className='opacity-60' href={"/"}>
+                            Trang Chủ
+                        </Link>
+                        <span>{name}</span>
+                    </Breadcrumbs>
+                </div>
+            </div>
             <div className='flex flex-col xl:flex-row shadow-lg rounded-lg p-3'>
                 <div className='flex-1 px-4'>
                     <div>
@@ -98,7 +110,7 @@ const ProductDetail = ({ product }) => {
                 </div>
                 <div className='flex flex-col flex-1 px-4 justify-between'>
                     <div className='flex flex-col justify-start'>
-                        <h2 className='mb-2 leading-tight tracking-tight font-bold text-coca-darkest text-3xl'>
+                        <h2 className='mb-2 leading-tight tracking-tight font-bold text-coca-darkest text-2xl xl:text-xl'>
                             {name}
                         </h2>
                         <div className='flex flex-row justify-between'>

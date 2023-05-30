@@ -37,7 +37,7 @@ const TABLE_HEAD = [
     "",
 ]
 
-const products = ({ products, result }) => {
+const Products = ({ products, result }) => {
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { user, token },
@@ -182,7 +182,7 @@ const products = ({ products, result }) => {
         </>
     )
 }
-export default products
+export default Products
 
 export const getServerSideProps = async () => {
     const res = await getData("product")
