@@ -39,9 +39,9 @@ const Layout = ({ children }) => {
     return (
         <>
             {user?.role === "admin" ? (
-                <AdminLayout children={children} />
+                <AdminLayout>{children}</AdminLayout>
             ) : (
-                <UserLayout children={children} />
+                <UserLayout>{children}</UserLayout>
             )}
         </>
     )
