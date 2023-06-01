@@ -1,6 +1,6 @@
 import Product from "@/components/Product"
-import { getData } from "@/utils/fetchData"
-import React, { useContext, useEffect } from "react"
+import { getData, postData } from "@/utils/fetchData"
+import React, { useContext, useEffect, useState } from "react"
 import { DataContext } from "@/store/globalState"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 import Router, { useRouter } from "next/router"
@@ -10,6 +10,7 @@ import {
     PlusIcon,
     MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline"
+import { XMarkIcon } from "@heroicons/react/24/solid"
 import {
     Card,
     CardHeader,
@@ -21,30 +22,75 @@ import {
     Avatar,
     IconButton,
     Tooltip,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    DialogFooter,
     Input,
+    Textarea,
+    Select,
+    Option,
 } from "@material-tailwind/react"
 import ProductItem from "@/components/admin/ProductItem"
 
 import DeniedAccess from "@/components/DeniedAccess"
 import Head from "next/head"
 
-const TABLE_HEAD = [
-    "Tên sản phảm",
-    "Đơn giá",
-    "Phân loại",
-    "Đã bán",
-    "Ngày tạo",
-    "",
-]
+const TABLE_HEAD = ["Tên sản phảm", "Đơn giá", "Phân loại", "Đã bán", ""]
 
 const Products = ({ products, result }) => {
     const [state, dispatch] = useContext(DataContext)
+    const [openAddNew, setOpenAddNew] = useState(false)
     const {
         auth: { user, token },
     } = state
 
+    const router = useRouter()
+
+    const initialState = {
+        name: "",
+        description: "",
+        price: "",
+        urlImg: "",
+        category: "",
+    }
+
+    const [newProduct, setNewProduct] = useState(initialState)
+    const { name, description, price, urlImg, category } = newProduct
+    const handleChangeInput = (e) => {
+        const { name, value } = e.target
+        setNewProduct({ ...newProduct, [name]: value })
+    }
+    const handleChangeCategory = (e) => {
+        setNewProduct({ ...newProduct, category: e })
+    }
+
     if (!checkIfUserIsAdmin(user)) {
         return <DeniedAccess />
+    }
+
+    const handleOpenAddNew = () => {
+        setOpenAddNew(!openAddNew)
+    }
+    const handleAddNew = async () => {
+        //console.log("new product", newProduct)
+
+        await postData("product", newProduct, token)
+            .then((res) => {
+                if (res.err) {
+                    return dispatch({
+                        type: "NOTIFY",
+                        payload: { error: res.err },
+                    })
+                }
+                dispatch({ type: "NOTIFY", payload: { success: res.msg } })
+                setNewProduct({})
+                handleOpenAddNew()
+                return router.reload()
+            })
+            .catch((err) => {
+                return dispatch({ type: "NOTIFY", payload: { error: err } })
+            })
     }
     return (
         <>
@@ -78,14 +124,92 @@ const Products = ({ products, result }) => {
                                     }
                                 />
                             </div>
-                            <Button
-                                className='flex items-center gap-3'
-                                color='blue'
-                                size='sm'
-                            >
-                                <PlusIcon strokeWidth={2} className='h-4 w-4' />{" "}
-                                Thêm Sản Phẩm
-                            </Button>
+
+                            <React.Fragment>
+                                <Button
+                                    onClick={handleOpenAddNew}
+                                    className='flex items-center gap-3'
+                                    color='blue'
+                                    size='sm'
+                                >
+                                    <PlusIcon
+                                        strokeWidth={2}
+                                        className='h-4 w-4'
+                                    />{" "}
+                                    Thêm Sản Phẩm
+                                </Button>
+                                <Dialog
+                                    open={openAddNew}
+                                    handler={handleOpenAddNew}
+                                >
+                                    <div className='flex items-center justify-between'>
+                                        <DialogHeader>
+                                            Thêm Sản Phẩm Mới
+                                        </DialogHeader>
+                                        <XMarkIcon
+                                            className='mr-3 h-5 w-5'
+                                            onClick={handleOpenAddNew}
+                                        />
+                                    </div>
+                                    <DialogBody divider>
+                                        <div className='grid gap-6'>
+                                            <Input
+                                                value={name}
+                                                onChange={handleChangeInput}
+                                                name='name'
+                                                label='Tên Sản Phẩm'
+                                            />
+                                            <Input
+                                                value={price}
+                                                onChange={handleChangeInput}
+                                                name='price'
+                                                label='Giá'
+                                            />
+                                            <Input
+                                                value={description}
+                                                onChange={handleChangeInput}
+                                                name='description'
+                                                label='Mô Tả'
+                                            />
+                                            <Input
+                                                value={urlImg}
+                                                onChange={handleChangeInput}
+                                                name='urlImg'
+                                                label='URL Hình Ảnh'
+                                            />
+                                            <Select
+                                                name='category'
+                                                onChange={handleChangeCategory}
+                                                value={category}
+                                                label='Phân Loại'
+                                            >
+                                                <Option value='drink'>
+                                                    Thức Uống
+                                                </Option>
+                                                <Option value='food'>
+                                                    Ăn Vặt
+                                                </Option>
+                                            </Select>
+                                        </div>
+                                    </DialogBody>
+                                    <DialogFooter className='space-x-2'>
+                                        <Button
+                                            variant='outlined'
+                                            color='red'
+                                            onClick={handleOpenAddNew}
+                                        >
+                                            Hủy
+                                        </Button>
+                                        <Button
+                                            variant='gradient'
+                                            color='green'
+                                            onClick={handleAddNew}
+                                        >
+                                            Thêm
+                                        </Button>
+                                    </DialogFooter>
+                                </Dialog>
+                            </React.Fragment>
                             <Button
                                 className='flex items-center gap-3'
                                 color='blue'

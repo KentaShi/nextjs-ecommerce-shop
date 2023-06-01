@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { getData } from "@/utils/fetchData"
 import { DataContext } from "@/store/globalState"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { Breadcrumbs } from "@material-tailwind/react"
 import Link from "next/link"
+import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 
 const ProductDetail = ({ product }) => {
     const { name, description, price, images } = product
@@ -20,6 +21,12 @@ const ProductDetail = ({ product }) => {
     const {
         auth: { user },
     } = state
+
+    useEffect(() => {
+        if (checkIfUserIsAdmin(user)) {
+            router.push("/admin")
+        }
+    }, [])
 
     const handleMinus = (e) => {
         e.preventDefault()

@@ -11,7 +11,7 @@ import {
 } from "@material-tailwind/react"
 import Link from "next/link"
 import { useState, useContext, useEffect } from "react"
-import valid from "@/utils/valid"
+import { validUser } from "@/utils/valid"
 import { DataContext } from "@/store/globalState"
 import { postData } from "@/utils/fetchData"
 import { useRouter } from "next/router"
@@ -39,7 +39,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const errMsg = valid(
+        const errMsg = validUser(
             fullName,
             phone,
             address,

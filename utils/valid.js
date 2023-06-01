@@ -1,4 +1,10 @@
-const valid = (fullName, phone, address, password, confirmPassword) => {
+export const validUser = (
+    fullName,
+    phone,
+    address,
+    password,
+    confirmPassword
+) => {
     if (!fullName || !phone || !address || !password) {
         return "Please enter all fields."
     }
@@ -7,5 +13,4 @@ const valid = (fullName, phone, address, password, confirmPassword) => {
         return "Confirm Password did not match."
     }
 }
-
-export default valid
+export const validProduct = () => {}

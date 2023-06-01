@@ -56,8 +56,8 @@ const OrderItem = ({ classes, order }) => {
         router.reload()
     }
 
-    const handleDelete = () => {
-        deleteData(`order/${_id}`, token).then((res) => {
+    const handleDelete = async () => {
+        await deleteData(`order/${_id}`, token).then((res) => {
             if (res.err)
                 return dispatch({
                     type: "NOTIFY",
@@ -71,25 +71,39 @@ const OrderItem = ({ classes, order }) => {
         router.reload()
     }
 
-    const handlePaid = () => {
+    const handlePaid = async () => {
         const currentTIme = new Date()
-        updateData(
+        await updateData(
             `order/${_id}`,
             { status: { name: data[1], time: currentTIme } },
             token
-        ).then((res) => {
+        ).then(async (res) => {
             if (res.err)
                 return dispatch({
                     type: "NOTIFY",
                     payload: { error: res.err },
                 })
             //console.log(res)
+            await res.order.products.map(async (item) => {
+                await updateData(
+                    `product/${item.product._id}`,
+                    { sold: item.product.sold + item.qty },
+                    token
+                ).then((res) => {
+                    if (res.err)
+                        return dispatch({
+                            type: "NOTIFY",
+                            payload: { error: res.err },
+                        })
+                })
+            })
+            setIsPaid(true)
             return dispatch({
                 type: "NOTIFY",
                 payload: { success: res.msg },
             })
         })
-        setIsPaid(true)
+
         router.reload()
     }
 
@@ -167,16 +181,21 @@ const OrderItem = ({ classes, order }) => {
                     Xác Nhận
                 </Button>
             </td>
-            <td className={`${classes} ${isConfirmed ? "" : "hidden"}`}>
-                <Button
-                    onClick={handlePaid}
-                    color='green'
-                    type='button'
-                    disabled={isPaid}
-                >
-                    Đã thanh toán
-                </Button>
-            </td>
+            {isConfirmed ? (
+                <td className={`${classes}`}>
+                    <Button
+                        onClick={handlePaid}
+                        color='green'
+                        type='button'
+                        disabled={isPaid}
+                    >
+                        Đã thanh toán
+                    </Button>
+                </td>
+            ) : (
+                <td></td>
+            )}
+
             <td className={classes}>
                 <Link href={`/admin/orders/${_id}`}>
                     <Tooltip content='Chi Tiết'>
