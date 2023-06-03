@@ -36,7 +36,14 @@ import ProductItem from "@/components/admin/ProductItem"
 import DeniedAccess from "@/components/DeniedAccess"
 import Head from "next/head"
 
-const TABLE_HEAD = ["Tên sản phảm", "Đơn giá", "Phân loại", "Đã bán", ""]
+const TABLE_HEAD = [
+    "Tên sản phảm",
+    "Đơn giá",
+    "Phân loại",
+    "Đã bán",
+    "Mô tả",
+    "",
+]
 
 const Products = ({ products, result }) => {
     const [state, dispatch] = useContext(DataContext)
@@ -86,7 +93,7 @@ const Products = ({ products, result }) => {
                 dispatch({ type: "NOTIFY", payload: { success: res.msg } })
                 setNewProduct({})
                 handleOpenAddNew()
-                return router.reload()
+                router.replace(router.asPath)
             })
             .catch((err) => {
                 return dispatch({ type: "NOTIFY", payload: { error: err } })

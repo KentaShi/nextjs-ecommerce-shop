@@ -34,7 +34,7 @@ const updateProduct = async (req, res) => {
                 name: name,
                 price: price,
                 description: description,
-                $push: { images: { url: urlImg } },
+                images: [{ url: urlImg }],
                 category: category,
                 sold: sold,
             },

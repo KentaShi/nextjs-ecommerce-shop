@@ -37,8 +37,8 @@ const OrderItem = ({ classes, order }) => {
         const currentTIme = new Date()
 
         updateData(
-            `order/${_id}`,
-            { status: { name: data[0], time: currentTIme } },
+            "order/change-status",
+            { id: _id, status: { name: data[0], time: currentTIme } },
             token
         ).then((res) => {
             if (res.err)
@@ -46,14 +46,14 @@ const OrderItem = ({ classes, order }) => {
                     type: "NOTIFY",
                     payload: { error: res.err },
                 })
-            //console.log(res)
+            setIsConfirmed(true)
             return dispatch({
                 type: "NOTIFY",
                 payload: { success: res.msg },
             })
         })
-        setIsConfirmed(true)
-        router.reload()
+
+        router.replace(router.asPath)
     }
 
     const handleDelete = async () => {
@@ -74,8 +74,8 @@ const OrderItem = ({ classes, order }) => {
     const handlePaid = async () => {
         const currentTIme = new Date()
         await updateData(
-            `order/${_id}`,
-            { status: { name: data[1], time: currentTIme } },
+            "order/change-status",
+            { id: _id, status: { name: data[1], time: currentTIme } },
             token
         ).then(async (res) => {
             if (res.err)
@@ -104,7 +104,7 @@ const OrderItem = ({ classes, order }) => {
             })
         })
 
-        router.reload()
+        router.replace(router.asPath)
     }
 
     useEffect(() => {

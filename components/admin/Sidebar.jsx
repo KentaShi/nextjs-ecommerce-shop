@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
     Card,
     Typography,
@@ -22,16 +22,31 @@ import {
 } from "@heroicons/react/24/solid"
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import { DataContext } from "@/store/globalState"
+import Cookies from "js-cookie"
 
 const Sidebar = () => {
-    const [open, setOpen] = React.useState(0)
+    const router = useRouter()
+    const [state, dispatch] = useContext(DataContext)
 
+    const handleLogout = (e) => {
+        e.preventDefault()
+        Cookies.remove("refresh_token", { path: "api/auth/accessToken" })
+        localStorage.removeItem("firstLogin")
+        dispatch({ type: "AUTH", payload: {} })
+        dispatch({ type: "NOTIFY", payload: { success: "Logged out." } })
+
+        return router.push("/")
+    }
+
+    const [open, setOpen] = React.useState(0)
     const handleOpen = (value) => {
         setOpen(open === value ? 0 : value)
     }
 
     return (
-        <Card className='fixed top-14 left-0 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5     '>
+        <Card className='fixed top-0 left-0 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5     '>
             <div className='mb-2 p-4'>
                 <Link href={"/admin"}>
                     <Typography variant='h5' color='blue-gray'>
@@ -175,17 +190,18 @@ const Sidebar = () => {
                     </ListItemPrefix>
                     Profile
                 </ListItem>
-                <ListItem>
-                    <ListItemPrefix>
-                        <Cog6ToothIcon className='h-5 w-5' />
-                    </ListItemPrefix>
-                    Settings
-                </ListItem>
+
                 <ListItem>
                     <ListItemPrefix>
                         <UsersIcon className='h-5 w-5' />
                     </ListItemPrefix>
                     Users
+                </ListItem>
+                <ListItem onClick={handleLogout}>
+                    <ListItemPrefix>
+                        <Cog6ToothIcon className='h-5 w-5' />
+                    </ListItemPrefix>
+                    Log Out
                 </ListItem>
             </List>
         </Card>

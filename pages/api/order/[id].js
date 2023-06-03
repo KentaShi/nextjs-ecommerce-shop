@@ -3,10 +3,10 @@ import Order from "@/models/Order"
 export default async (req, res) => {
     switch (req.method) {
         case "GET":
-            await getProduct(req, res)
+            await getOrder(req, res)
             break
-        case "PATCH":
-            await updateStatus(req, res)
+        case "PUT":
+            await updateOrder(req, res)
             break
         case "DELETE":
             await deleteOrder(req, res)
@@ -14,7 +14,7 @@ export default async (req, res) => {
     }
 }
 
-const getProduct = async (req, res) => {
+const getOrder = async (req, res) => {
     try {
         const { id } = req.query
         const order = await Order.findById(id)
@@ -24,17 +24,13 @@ const getProduct = async (req, res) => {
     }
 }
 
-const updateStatus = async (req, res) => {
+const updateOrder = async (req, res) => {
     try {
         const { id } = req.query
-        const {
-            status: { name, time },
-        } = req.body
-        const updatedOrder = await Order.findOneAndUpdate(
-            { _id: id },
-            { $push: { status: { statusName: name, statusTime: time } } },
-            { new: true }
-        )
+        const data = req.body
+        const updatedOrder = await Order.findOneAndUpdate({ _id: id }, data, {
+            new: true,
+        })
         //console.log("updatedOrder", updatedOrder)
         return res
             .status(200)

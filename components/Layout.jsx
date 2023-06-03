@@ -6,6 +6,7 @@ import Notify from "./Notify"
 
 import { DataContext } from "@/store/globalState"
 import Sidebar from "./admin/Sidebar"
+import SpeedDialOption from "./SpeedDialOption"
 
 const Layout = ({ children }) => {
     const [state, dispatch] = useContext(DataContext)
@@ -15,10 +16,11 @@ const Layout = ({ children }) => {
 
     const UserLayout = () => {
         return (
-            <div className='flex flex-col min-h-screen'>
+            <div className='flex flex-col min-h-screen relative'>
                 <Navbar />
                 <Notify />
                 <div className='mt-28 min-h-[82vh]'>{children}</div>
+                <SpeedDialOption />
                 <Footer />
             </div>
         )
@@ -27,9 +29,8 @@ const Layout = ({ children }) => {
     const AdminLayout = () => {
         return (
             <div className='min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased'>
-                <NavbarAdmin />
                 <Sidebar />
-                <div className='mt-14 ml-14 md:ml-64 h-full min-h-screen mb-10 p-4'>
+                <div className='ml-14 md:ml-64 h-full min-h-screen mb-10 p-4'>
                     {children}
                 </div>
                 <Notify />
