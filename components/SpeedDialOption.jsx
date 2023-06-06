@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
     IconButton,
     SpeedDial,
@@ -16,10 +16,18 @@ import {
     Square3Stack3DIcon,
     ChatBubbleLeftIcon,
 } from "@heroicons/react/24/outline"
+import Chat from "./Chat"
 
 const SpeedDialOption = () => {
+    const [openChat, setOpenChat] = useState(false)
+    const handleOpenChat = () => {
+        setOpenChat(!openChat)
+    }
     return (
         <div className='fixed bottom-5 right-2'>
+            <div className='absolute bottom-5 right-6'>
+                <Chat openChat={openChat} />
+            </div>
             <SpeedDial>
                 <SpeedDialHandler>
                     <IconButton size='lg' className='rounded-full'>
@@ -27,7 +35,7 @@ const SpeedDialOption = () => {
                     </IconButton>
                 </SpeedDialHandler>
                 <SpeedDialContent>
-                    <SpeedDialAction>
+                    <SpeedDialAction onClick={handleOpenChat}>
                         <ChatBubbleLeftIcon className='h-5 w-5' />
                         <Typography
                             color='blue-gray'
