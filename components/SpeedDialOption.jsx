@@ -25,26 +25,21 @@ const SpeedDialOption = () => {
     }
     return (
         <div className='fixed bottom-5 right-2'>
-            <div className='absolute bottom-5 right-6'>
+            <div className='absolute bottom-0 right-12'>
                 <Chat openChat={openChat} />
             </div>
             <SpeedDial>
-                <SpeedDialHandler>
-                    <IconButton size='lg' className='rounded-full'>
-                        <PlusIcon className='h-5 w-5 transition-transform group-hover:rotate-45' />
-                    </IconButton>
-                </SpeedDialHandler>
-                <SpeedDialContent>
-                    <SpeedDialAction onClick={handleOpenChat}>
+                <IconButton
+                    onClick={handleOpenChat}
+                    size='lg'
+                    className='rounded-full'
+                >
+                    {!openChat ? (
+                        <PlusIcon className='h-5 w-5 rotate-45' />
+                    ) : (
                         <ChatBubbleLeftIcon className='h-5 w-5' />
-                        <Typography
-                            color='blue-gray'
-                            className='text-xs font-normal'
-                        >
-                            Chat
-                        </Typography>
-                    </SpeedDialAction>
-                </SpeedDialContent>
+                    )}
+                </IconButton>
             </SpeedDial>
         </div>
     )
