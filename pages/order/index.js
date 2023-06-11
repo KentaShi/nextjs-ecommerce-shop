@@ -1,19 +1,22 @@
 import Order from "@/components/Order"
 import { DataContext } from "@/store/globalState"
 import { getData } from "@/utils/fetchData"
+import fetcher from "@/utils/fetcher"
 import { Breadcrumbs } from "@material-tailwind/react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useContext, useEffect, useState } from "react"
 
-const Orders = ({ orders }) => {
+const Orders = (props) => {
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { user },
     } = state
-
-    const filterOrderByUser = orders.filter((item) => item.userID === user?._id)
+    const filterOrderByUser = props.orders.filter(
+        (item) => item.userID === user?._id
+    )
+    const [orders, setOrders] = useState(filterOrderByUser)
 
     return (
         <div>
@@ -30,11 +33,13 @@ const Orders = ({ orders }) => {
                     </Breadcrumbs>
                 </div>
             </div>
-            {filterOrderByUser.length === 0 ? (
-                <div>Bạn không có đơn nào.</div>
+            {orders.length === 0 ? (
+                <div className='flex flex-col items-center' s>
+                    Bạn không có đơn nào.
+                </div>
             ) : (
                 <div className='flex flex-col items-center'>
-                    {filterOrderByUser
+                    {orders
                         .map((item, index) => (
                             <Order key={index} order={item} />
                         ))
@@ -48,7 +53,7 @@ const Orders = ({ orders }) => {
 export const getServerSideProps = async () => {
     const res = await getData("order")
     return {
-        props: { orders: res.orders || null, result: res.result || null },
+        props: { orders: res.orders || [], result: res.result || null },
     }
 }
 

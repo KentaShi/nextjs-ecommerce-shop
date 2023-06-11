@@ -20,13 +20,14 @@ import Chat from "./Chat"
 
 const SpeedDialOption = () => {
     const [openChat, setOpenChat] = useState(false)
-    const handleOpenChat = () => {
+    const handleOpenChat = (e) => {
+        e.preventDefault()
         setOpenChat(!openChat)
     }
     return (
         <div className='fixed bottom-5 right-2'>
-            <div className='absolute bottom-0 right-12'>
-                <Chat openChat={openChat} />
+            <div className='absolute bottom-0 right-12 rounded-xl'>
+                <Chat openChat={openChat} setOpenChat={setOpenChat} />
             </div>
             <SpeedDial>
                 <IconButton
@@ -34,7 +35,7 @@ const SpeedDialOption = () => {
                     size='lg'
                     className='rounded-full'
                 >
-                    {!openChat ? (
+                    {openChat ? (
                         <PlusIcon className='h-5 w-5 rotate-45' />
                     ) : (
                         <ChatBubbleLeftIcon className='h-5 w-5' />

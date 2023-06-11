@@ -49,9 +49,9 @@ const Sidebar = () => {
         <Card className='fixed top-0 left-0 h-[calc(100vh-2rem)] w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5     '>
             <div className='mb-2 p-4'>
                 <Link href={"/admin"}>
-                    <Typography variant='h5' color='blue-gray'>
+                    <p className='text-blue-gray-900 font-bold text-lg'>
                         Admin
-                    </Typography>
+                    </p>
                 </Link>
             </div>
             <List>
@@ -169,21 +169,23 @@ const Sidebar = () => {
                     </AccordionBody>
                 </Accordion>
                 <hr className='my-2 border-blue-gray-50' />
-                <ListItem>
-                    <ListItemPrefix>
-                        <InboxIcon className='h-5 w-5' />
-                    </ListItemPrefix>
-                    Inbox
-                    <ListItemSuffix>
-                        <Chip
-                            value='14'
-                            size='sm'
-                            variant='ghost'
-                            color='blue-gray'
-                            className='rounded-full'
-                        />
-                    </ListItemSuffix>
-                </ListItem>
+                <Link href={"/admin/messenger"}>
+                    <ListItem>
+                        <ListItemPrefix>
+                            <InboxIcon className='h-5 w-5' />
+                        </ListItemPrefix>
+                        Inbox
+                        <ListItemSuffix>
+                            <Chip
+                                value='14'
+                                size='sm'
+                                variant='ghost'
+                                color='blue-gray'
+                                className='rounded-full'
+                            />
+                        </ListItemSuffix>
+                    </ListItem>
+                </Link>
                 <ListItem>
                     <ListItemPrefix>
                         <UserCircleIcon className='h-5 w-5' />

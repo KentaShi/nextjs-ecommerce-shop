@@ -13,6 +13,10 @@ const Layout = ({ children }) => {
     const {
         auth: { user },
     } = state
+    let isLogined = false
+    if (user) {
+        isLogined = true
+    }
 
     const UserLayout = () => {
         return (
@@ -20,7 +24,7 @@ const Layout = ({ children }) => {
                 <Navbar />
                 <Notify />
                 <div className='mt-28 min-h-[82vh]'>{children}</div>
-                <SpeedDialOption />
+                {isLogined && <SpeedDialOption />}
                 <Footer />
             </div>
         )
@@ -33,7 +37,7 @@ const Layout = ({ children }) => {
                 <div className='ml-14 md:ml-64 h-full min-h-screen mb-10 p-4'>
                     {children}
                 </div>
-                <SpeedDialOption />
+                {isLogined && <SpeedDialOption />}
                 <Notify />
             </div>
         )

@@ -8,13 +8,17 @@ import {
 import {
     Button,
     Chip,
+    Dialog,
+    DialogBody,
+    DialogFooter,
+    DialogHeader,
     IconButton,
     Tooltip,
     Typography,
 } from "@material-tailwind/react"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import React, { useContext, useEffect, useState } from "react"
+import React, { Fragment, useContext, useEffect, useState } from "react"
 
 const OrderItem = ({ classes, order }) => {
     const [isConfirmed, setIsConfirmed] = useState(false)
@@ -105,6 +109,12 @@ const OrderItem = ({ classes, order }) => {
         })
 
         router.replace(router.asPath)
+    }
+
+    const [openDialogConfirmDelete, setOpenDialogConfirmDelete] =
+        useState(false)
+    const handleOpenConfirmDelete = () => {
+        setOpenDialogConfirmDelete(!openDialogConfirmDelete)
     }
 
     useEffect(() => {
@@ -207,13 +217,38 @@ const OrderItem = ({ classes, order }) => {
             </td>
             <td className={classes}>
                 <Tooltip content='Xóa'>
-                    <IconButton
-                        variant='text'
-                        color='blue-gray'
-                        onClick={handleDelete}
-                    >
-                        <TrashIcon className='h-4 w-4' />
-                    </IconButton>
+                    <Fragment>
+                        <Button
+                            onClick={handleOpenConfirmDelete}
+                            className='bg-red-300 rounded p-2 text-white hover:bg-red-400 hover:shadow-coca-light'
+                        >
+                            <TrashIcon className='h-4 w-4' />
+                        </Button>
+                        <Dialog
+                            open={openDialogConfirmDelete}
+                            handler={handleOpenConfirmDelete}
+                        >
+                            <DialogHeader>{name}</DialogHeader>
+                            <DialogBody divider>Xóa đơn hàng này?</DialogBody>
+                            <DialogFooter>
+                                <Button
+                                    variant='text'
+                                    color='red'
+                                    onClick={handleOpenConfirmDelete}
+                                    className='mr-1'
+                                >
+                                    <span>Cancel</span>
+                                </Button>
+                                <Button
+                                    variant='gradient'
+                                    color='green'
+                                    onClick={handleDelete}
+                                >
+                                    <span>Confirm</span>
+                                </Button>
+                            </DialogFooter>
+                        </Dialog>
+                    </Fragment>
                 </Tooltip>
             </td>
         </tr>

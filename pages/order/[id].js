@@ -110,24 +110,16 @@ const DetailOrder = ({ order }) => {
                                 <TimelineConnector />
                                 <TimelineHeader className='h-3'>
                                     {displayIconStatus(item.statusName)}
-                                    <Typography
-                                        variant='h6'
-                                        color='blue-gray'
-                                        className='leading-none'
-                                    >
+                                    <p className='leading-none font-bold'>
                                         {displayDetailStatus(item.statusName)}
-                                    </Typography>
+                                    </p>
                                 </TimelineHeader>
                                 <TimelineBody className='pb-8'>
-                                    <Typography
-                                        variant='small'
-                                        color='gary'
-                                        className='font-normal text-gray-600'
-                                    >
+                                    <p className='font-normal text-sm text-gray-600'>
                                         {new Date(
                                             item.statusTime
                                         ).toLocaleString("id-ID")}
-                                    </Typography>
+                                    </p>
                                 </TimelineBody>
                             </TimelineItem>
                         ))

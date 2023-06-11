@@ -1,10 +1,16 @@
 import { DataContext } from "@/store/globalState"
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import ScrollToBottom from "react-scroll-to-bottom"
 import Message from "./Message"
+import { XMarkIcon } from "@heroicons/react/24/solid"
+import { io } from "socket.io-client"
+import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 
-const Chat = ({ openChat }) => {
-    const isOpen = openChat ? "hidden" : ""
+const ENDPOINT = "localhost:8000"
+let socket
+
+const Chat = ({ openChat, setOpenChat }) => {
+    const isOpen = openChat ? "" : "hidden"
 
     const [state, dispatch] = useContext(DataContext)
 
@@ -12,27 +18,75 @@ const Chat = ({ openChat }) => {
         auth: { user },
     } = state
 
-    const ENDPOINT = "localhost:5000"
+    const initialMessages = {
+        name: "",
+        message: "",
+        admin: false,
+    }
 
+    const isAdmin = checkIfUserIsAdmin(user)
+
+    const [name, setName] = useState("")
     const [message, setMessage] = useState("")
-    const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([initialMessages])
+
+    useEffect(() => {
+        socket = io(ENDPOINT, {
+            transports: ["websocket"],
+            query: { isAdmin: isAdmin },
+        })
+
+        return () => {
+            socket.disconnect()
+            socket.off()
+        }
+    }, [user])
+    useEffect(() => {
+        socket.on("message", ({ message, name }) => {
+            setMessages((messages) => [
+                ...messages,
+                { message, name, admin: isAdmin },
+            ])
+            setName(name)
+        })
+    }, [])
 
     const handleSendMessage = (e) => {
         e.preventDefault()
-        setMessages((messages) => [...messages, message])
-        setMessage("")
+        if (message !== "") {
+            socket.emit(
+                "message",
+                { message, name: isAdmin ? "admin" : user.fullName },
+                () => setMessage("")
+            )
+            setMessages((messages) => [
+                ...messages,
+                { message, name: isAdmin ? "admin" : user.fullName },
+            ])
+        }
     }
     return (
         <div
-            className={`${isOpen} w-[338px] h-[455px] shadow-md shadow-coca-medium/60  rounded`}
+            className={`${isOpen} w-[338px] h-[455px] shadow-md shadow-gray-600/60 rounded-xl`}
         >
-            <div className='flex flex-col justify-between bg-white rounded-lg h-full'>
-                <div className='border-b-2 p-2 shadow-sm'>
+            <div className='flex flex-col justify-between bg-white rounded-xl h-full'>
+                <div className='flex flex-row justify-between items-center border-b-2 p-2 shadow-sm'>
                     <p>Chat with Shop</p>
+                    <XMarkIcon
+                        className='cursor-pointer hover:bg-blue-gray-50 hover:rounded-full'
+                        width={20}
+                        height={20}
+                        onClick={() => setOpenChat(!openChat)}
+                    />
                 </div>
                 <ScrollToBottom className='py-1 px-2 overflow-auto flex-auto'>
                     {messages.map((message, index) => (
-                        <Message message={message} key={index} />
+                        <Message
+                            name={message.name}
+                            message={message.message}
+                            key={index}
+                            isAdmin={message.admin}
+                        />
                     ))}
                 </ScrollToBottom>
                 <form className='flex flex-row m-1 p-1 rounded border-[#d3d3d3]'>

@@ -132,7 +132,11 @@ const CartItem = ({ product, qty }) => {
                         <Dialog open={openDialog} handler={handleOpenDialog}>
                             <DialogHeader>{name}</DialogHeader>
                             <DialogBody divider>
-                                Do you want to delete this item?
+                                Xóa{" "}
+                                <span className='italic text-coca-medium-dark font-bold'>
+                                    {name}
+                                </span>{" "}
+                                ra khỏi giỏ hàng?
                             </DialogBody>
                             <DialogFooter>
                                 <Button
@@ -141,14 +145,14 @@ const CartItem = ({ product, qty }) => {
                                     onClick={handleOpenDialog}
                                     className='mr-1'
                                 >
-                                    <span>Cancel</span>
+                                    <span>Hủy</span>
                                 </Button>
                                 <Button
                                     variant='gradient'
                                     color='green'
                                     onClick={handleDelete}
                                 >
-                                    <span>Confirm</span>
+                                    <span>Xóa</span>
                                 </Button>
                             </DialogFooter>
                         </Dialog>
