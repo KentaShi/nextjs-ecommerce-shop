@@ -19,9 +19,11 @@ const Chat = ({ openChat, setOpenChat }) => {
     } = state
 
     const initialMessages = {
-        name: "",
+        user: {
+            id: "",
+            name: "",
+        },
         message: "",
-        admin: false,
     }
 
     const isAdmin = checkIfUserIsAdmin(user)
@@ -40,14 +42,11 @@ const Chat = ({ openChat, setOpenChat }) => {
             socket.disconnect()
             socket.off()
         }
-    }, [user])
+    }, [])
     useEffect(() => {
-        socket.on("message", ({ message, name }) => {
-            setMessages((messages) => [
-                ...messages,
-                { message, name, admin: isAdmin },
-            ])
-            setName(name)
+        socket.on("message", ({ message, user }) => {
+            setMessages((messages) => [...messages, { message, user }])
+            setName(user.name)
         })
     }, [])
 
@@ -56,12 +55,18 @@ const Chat = ({ openChat, setOpenChat }) => {
         if (message !== "") {
             socket.emit(
                 "message",
-                { message, name: isAdmin ? "admin" : user.fullName },
+                {
+                    message,
+                    user: { id: user._id, name: user.fullName },
+                },
                 () => setMessage("")
             )
             setMessages((messages) => [
                 ...messages,
-                { message, name: isAdmin ? "admin" : user.fullName },
+                {
+                    message,
+                    user: { id: user._id, name: user.fullName },
+                },
             ])
         }
     }
@@ -71,7 +76,7 @@ const Chat = ({ openChat, setOpenChat }) => {
         >
             <div className='flex flex-col justify-between bg-white rounded-xl h-full'>
                 <div className='flex flex-row justify-between items-center border-b-2 p-2 shadow-sm'>
-                    <p>Chat with Shop</p>
+                    <p>Chat with {name}</p>
                     <XMarkIcon
                         className='cursor-pointer hover:bg-blue-gray-50 hover:rounded-full'
                         width={20}
@@ -81,12 +86,7 @@ const Chat = ({ openChat, setOpenChat }) => {
                 </div>
                 <ScrollToBottom className='py-1 px-2 overflow-auto flex-auto'>
                     {messages.map((message, index) => (
-                        <Message
-                            name={message.name}
-                            message={message.message}
-                            key={index}
-                            isAdmin={message.admin}
-                        />
+                        <Message id={user._id} message={message} key={index} />
                     ))}
                 </ScrollToBottom>
                 <form className='flex flex-row m-1 p-1 rounded border-[#d3d3d3]'>

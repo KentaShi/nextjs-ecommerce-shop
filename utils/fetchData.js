@@ -17,11 +17,17 @@ export const postData = async (url, post, token) => {
     }
 }
 
-export const getData = async (url) => {
+export const getData = async (url, token) => {
     try {
-        const res = await axios.get(`${BASE_URL}/api/${url}`)
+        const res = await axios.get(`${BASE_URL}/api/${url}`, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: token,
+            },
+        })
         return res.data
     } catch (error) {
+        console.log(error)
         return error.response.data
     }
 }
