@@ -11,7 +11,7 @@ export default async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const { id } = req.query
-        const user = await User.findById(id)
+        const user = await User.findById(id).select("-password")
         return res.status(200).json({ user: user })
     } catch (error) {
         return res.status(404).json({ err: error.messgage })

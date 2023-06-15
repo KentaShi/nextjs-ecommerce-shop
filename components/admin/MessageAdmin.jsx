@@ -1,6 +1,7 @@
 import React from "react"
 import { format } from "timeago.js"
-const Message = ({ id, message }) => {
+
+const MessageAdmin = ({ id, message }) => {
     const isSentByCurrentUser = id === message.sender
     return isSentByCurrentUser ? (
         <div className='flex justify-end py-0 px-[5%] mt-[3px]'>
@@ -29,4 +30,4 @@ const Message = ({ id, message }) => {
     )
 }
 
-export default Message
+export default MessageAdmin

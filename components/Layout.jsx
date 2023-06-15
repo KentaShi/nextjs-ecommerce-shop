@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
                 <div className='ml-14 md:ml-64 h-full min-h-screen mb-10 p-4'>
                     {children}
                 </div>
-                {isLogined && <SpeedDialOption />}
+
                 <Notify />
             </div>
         )

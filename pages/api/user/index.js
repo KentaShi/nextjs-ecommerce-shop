@@ -40,7 +40,7 @@ const getUsers = async (req, res) => {
     try {
         const result = await auth(req, res)
         if (result.role === "admin") {
-            const users = await User.find()
+            const users = await User.find().select("-password")
             const usersWithoutAdmin = users.filter(
                 (user) => user.role !== "admin"
             )

@@ -5,8 +5,10 @@ import Message from "./Message"
 import { XMarkIcon } from "@heroicons/react/24/solid"
 import { io } from "socket.io-client"
 import { checkIfUserIsAdmin } from "@/utils/adminUtils"
+import axios from "axios"
 
 const ENDPOINT = "localhost:8000"
+const HOST = process.env.SERVER_CHAT
 let socket
 
 const Chat = ({ openChat, setOpenChat }) => {
@@ -18,19 +20,40 @@ const Chat = ({ openChat, setOpenChat }) => {
         auth: { user },
     } = state
 
-    const initialMessages = {
-        user: {
-            id: "",
-            name: "",
-        },
-        message: "",
-    }
-
     const isAdmin = checkIfUserIsAdmin(user)
 
     const [name, setName] = useState("")
-    const [message, setMessage] = useState("")
-    const [messages, setMessages] = useState([initialMessages])
+    const [newMessage, setNewMessage] = useState("")
+    const [messages, setMessages] = useState([])
+    const [conversations, setConversations] = useState([])
+    useEffect(() => {
+        const getConversations = async () => {
+            const res = await axios.get(`${HOST}/conversations/${user._id}`)
+            if (res) {
+                setConversations(res.data)
+            } else {
+                console.log("User not found")
+            }
+        }
+        getConversations()
+    }, [user._id])
+
+    useEffect(() => {
+        const getMessages = async () => {
+            try {
+                const res = await axios.get(
+                    `${HOST}/messages/${conversations[0]._id}`
+                )
+                setMessages(res.data)
+            } catch (error) {
+                console.log(
+                    "🚀 ~ file: ChatAdmin.jsx:35 ~ getMessages ~ error:",
+                    error
+                )
+            }
+        }
+        getMessages()
+    }, [conversations])
 
     useEffect(() => {
         socket = io(ENDPOINT, {
@@ -52,19 +75,19 @@ const Chat = ({ openChat, setOpenChat }) => {
 
     const handleSendMessage = (e) => {
         e.preventDefault()
-        if (message !== "") {
+        if (newMessage !== "") {
             socket.emit(
                 "message",
                 {
                     message,
                     user: { id: user._id, name: user.fullName },
                 },
-                () => setMessage("")
+                () => setNewMessage("")
             )
             setMessages((messages) => [
                 ...messages,
                 {
-                    message,
+                    newMessage,
                     user: { id: user._id, name: user.fullName },
                 },
             ])
@@ -76,7 +99,7 @@ const Chat = ({ openChat, setOpenChat }) => {
         >
             <div className='flex flex-col justify-between bg-white rounded-xl h-full'>
                 <div className='flex flex-row justify-between items-center border-b-2 p-2 shadow-sm'>
-                    <p>Chat with {name}</p>
+                    <p>Chat with Admin</p>
                     <XMarkIcon
                         className='cursor-pointer hover:bg-blue-gray-50 hover:rounded-full'
                         width={20}
