@@ -4,18 +4,49 @@ import axios from "axios"
 import React, { useContext, useEffect, useState } from "react"
 import ScrollToBottom from "react-scroll-to-bottom"
 import MessageAdmin from "./MessageAdmin"
-
+import { io } from "socket.io-client"
+import { checkIfUserIsAdmin } from "@/utils/adminUtils"
 const HOST = process.env.SERVER_CHAT
+let socket
+const ENDPOINT = "localhost:8000"
 
-const ChatAdmin = ({ conv, adminID }) => {
+const ChatAdmin = ({ active, conv, adminID, userID }) => {
     const [state, dispatch] = useContext(DataContext)
     const {
         auth: { user, token },
     } = state
 
+    const isAdmin = checkIfUserIsAdmin(user)
+
     const [customer, setCustomer] = useState()
     const [newMessage, setNewMessage] = useState("")
     const [messages, setMessages] = useState([])
+
+    useEffect(() => {
+        socket = io(ENDPOINT, {
+            transports: ["websocket"],
+            query: { isAdmin: isAdmin },
+        })
+
+        socket.on("getMessage", ({ sender, content, conversationID }) => {
+            if (conv._id === conversationID) {
+                setMessages((messages) => [
+                    ...messages,
+                    { sender, content, conversationID },
+                ])
+            }
+        })
+
+        return () => {
+            socket.disconnect()
+            socket.off()
+        }
+    }, [])
+
+    useEffect(() => {
+        socket.emit("addUser", adminID)
+    }, [adminID])
+
     useEffect(() => {
         const userID = conv.members.find((member) => member._id !== adminID)
         const getUser = async () => {
@@ -48,22 +79,28 @@ const ChatAdmin = ({ conv, adminID }) => {
 
     const handleSendMessage = async (e) => {
         e.preventDefault()
-
-        const message = {
-            sender: user._id,
-            content: newMessage,
-            conversationID: conv._id,
-        }
-
-        try {
-            const res = await axios.post(`${HOST}/messages`, message)
-            setMessages([...messages, res.data])
-            setNewMessage("")
-        } catch (error) {
-            console.log(
-                "🚀 ~ file: ChatAdmin.jsx:62 ~ handleSendMessage ~ error:",
-                error
+        if (newMessage !== "") {
+            const message = {
+                sender: user._id,
+                content: newMessage,
+                conversationID: conv._id,
+            }
+            const receiver = conv.members.find((member) => member !== adminID)
+            console.log("receiver:", receiver)
+            socket.emit("message", { ...message, receiver }, () =>
+                setNewMessage("")
             )
+
+            try {
+                const res = await axios.post(`${HOST}/messages`, message)
+                setMessages([...messages, res.data])
+                setNewMessage("")
+            } catch (error) {
+                console.log(
+                    "🚀 ~ file: ChatAdmin.jsx:62 ~ handleSendMessage ~ error:",
+                    error
+                )
+            }
         }
     }
     return (

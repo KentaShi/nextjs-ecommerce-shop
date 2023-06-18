@@ -22,38 +22,9 @@ const Chat = ({ openChat, setOpenChat }) => {
 
     const isAdmin = checkIfUserIsAdmin(user)
 
-    const [name, setName] = useState("")
     const [newMessage, setNewMessage] = useState("")
     const [messages, setMessages] = useState([])
-    const [conversations, setConversations] = useState([])
-    useEffect(() => {
-        const getConversations = async () => {
-            const res = await axios.get(`${HOST}/conversations/${user._id}`)
-            if (res) {
-                setConversations(res.data)
-            } else {
-                console.log("User not found")
-            }
-        }
-        getConversations()
-    }, [user._id])
-
-    useEffect(() => {
-        const getMessages = async () => {
-            try {
-                const res = await axios.get(
-                    `${HOST}/messages/${conversations[0]._id}`
-                )
-                setMessages(res.data)
-            } catch (error) {
-                console.log(
-                    "🚀 ~ file: ChatAdmin.jsx:35 ~ getMessages ~ error:",
-                    error
-                )
-            }
-        }
-        getMessages()
-    }, [conversations])
+    const [conversation, setConversation] = useState()
 
     useEffect(() => {
         socket = io(ENDPOINT, {
@@ -61,36 +32,77 @@ const Chat = ({ openChat, setOpenChat }) => {
             query: { isAdmin: isAdmin },
         })
 
+        socket.on("getMessage", ({ sender, content, conversationID }) => {
+            setMessages((messages) => [
+                ...messages,
+                { sender, content, conversationID },
+            ])
+        })
+
         return () => {
             socket.disconnect()
             socket.off()
         }
     }, [])
-    useEffect(() => {
-        socket.on("message", ({ message, user }) => {
-            setMessages((messages) => [...messages, { message, user }])
-            setName(user.name)
-        })
-    }, [])
 
-    const handleSendMessage = (e) => {
+    useEffect(() => {
+        socket.emit("addUser", user._id)
+    }, [user])
+
+    useEffect(() => {
+        const getConversationsAndMessages = async () => {
+            try {
+                const res = await axios.get(`${HOST}/conversations/${user._id}`)
+                if (res.data.length > 0) {
+                    setConversation(res.data[0])
+                    try {
+                        const resMessage = await axios.get(
+                            `${HOST}/messages/${res.data[0]._id}`
+                        )
+                        setMessages(resMessage.data)
+                    } catch (error) {
+                        console.log(
+                            "🚀 ~ file: ChatAdmin.jsx:43 ~ getMessages ~ error:",
+                            error
+                        )
+                    }
+                } else {
+                    console.log("Not found any conversation")
+                }
+            } catch (error) {
+                console.log(
+                    "🚀 ~ file: Chat.jsx:39 ~ getConversations ~ error:",
+                    error
+                )
+            }
+        }
+        getConversationsAndMessages()
+    }, [user])
+
+    const handleSendMessage = async (e) => {
         e.preventDefault()
         if (newMessage !== "") {
-            socket.emit(
-                "message",
-                {
-                    message,
-                    user: { id: user._id, name: user.fullName },
-                },
-                () => setNewMessage("")
+            const message = {
+                sender: user._id,
+                content: newMessage,
+                conversationID: conversation._id,
+            }
+            const receiver = conversation.members.find(
+                (member) => member !== user._id
             )
-            setMessages((messages) => [
-                ...messages,
-                {
-                    newMessage,
-                    user: { id: user._id, name: user.fullName },
-                },
-            ])
+            socket.emit("message", { ...message, receiver }, () =>
+                setNewMessage("")
+            )
+            try {
+                const res = await axios.post(`${HOST}/messages`, message)
+                setMessages([...messages, res.data])
+                setNewMessage("")
+            } catch (error) {
+                console.log(
+                    "🚀 ~ file: ChatAdmin.jsx:62 ~ handleSendMessage ~ error:",
+                    error
+                )
+            }
         }
     }
     return (
@@ -112,20 +124,21 @@ const Chat = ({ openChat, setOpenChat }) => {
                         <Message id={user._id} message={message} key={index} />
                     ))}
                 </ScrollToBottom>
+
                 <form className='flex flex-row m-1 p-1 rounded border-[#d3d3d3]'>
                     <input
-                        value={message}
+                        value={newMessage}
                         className='border-none rounded-full w-[80%] h-[36px] bg-blue-gray-50 px-3 py-3 text-sm focus:outline-none'
                         type='text'
                         placeholder='Type a message...'
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => setNewMessage(e.target.value)}
                         onKeyPress={(e) =>
                             e.key === "Enter" ? handleSendMessage(e) : null
                         }
                     />
                     <button
                         type='button'
-                        onClick={(e) => handleSendMessage(e)}
+                        onClick={handleSendMessage}
                         className='text-white rounded-full ml-1 uppercase text-xs bg-coca-medium border-none w-[20%] flex text-center items-center justify-center'
                     >
                         send

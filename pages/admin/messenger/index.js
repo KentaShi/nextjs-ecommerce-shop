@@ -21,6 +21,7 @@ const Messenger = (props) => {
     const [currentConv, setCurrentConv] = useState()
     const [active, setActive] = useState(null)
     const [conversations, setConversations] = useState([])
+    const [users, setUsers] = useState([])
     useEffect(() => {
         const getConversations = async () => {
             const res = await axios.get(`${HOST}/conversations/${user._id}`)
@@ -33,9 +34,37 @@ const Messenger = (props) => {
         getConversations()
     }, [user._id])
 
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const res = await getData("user", token)
+                if (res) {
+                    setUsers(res.users)
+                }
+            } catch (error) {
+                console.log("🚀 ~ file: index.js ~ getUsers ~ error:", error)
+            }
+        }
+        getUsers()
+    }, [])
+
     const handleCurrentChat = (conv, index) => {
         setCurrentConv(conv)
         setActive(index)
+    }
+    const handleCreateConversation = async (userID) => {
+        try {
+            const res = await axios.post(`${HOST}/conversations`, {
+                sender: user._id,
+                receiver: userID,
+            })
+            setConversations([...conversations], res.data)
+        } catch (error) {
+            return dispatch({
+                type: "NOTIFY",
+                payload: { err: error.message },
+            })
+        }
     }
 
     return (
@@ -55,9 +84,28 @@ const Messenger = (props) => {
                         </div>
                     ))}
                 </div>
+                <hr />
+                <p className='text-lg font-bold'>Users</p>
+                <div className='flex flex-col'>
+                    {users?.map((user, index) => (
+                        <div
+                            onClick={() => handleCreateConversation(user._id)}
+                            key={index}
+                            className='p-2 hover:bg-blue-gray-50 rounded-lg cursor-pointer  
+                            '
+                        >
+                            <p>{user.fullName}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
             {currentConv ? (
-                <ChatAdmin adminID={user._id} conv={currentConv} />
+                <ChatAdmin
+                    active={active}
+                    adminID={user._id}
+                    conv={currentConv}
+                    useID={currentConv.members.find((m) => m._id !== user._id)}
+                />
             ) : (
                 <div className='flex-[9] p-2 flex justify-center items-center'>
                     <p className='text-5xl uppercase text-blue-gray-600 font-semibold'>
